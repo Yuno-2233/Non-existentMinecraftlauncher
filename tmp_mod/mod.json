@@ -1,0 +1,1 @@
+{"id":"core.auth","name":"Core Authentication","version":"1.0.0","entrypoint":"main.wasm","builtin":true}

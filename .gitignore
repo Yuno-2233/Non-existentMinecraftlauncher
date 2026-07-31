@@ -1,0 +1,17 @@
+# Go 编译产物
+launcher
+*.exe
+*.wasm
+
+# 临时构建目录
+tmp_wasm_build/
+
+# Go 依赖缓存（可选，通常建议提交 go.mod 和 go.sum，但忽略 vendor）
+vendor/
+
+# 外部插件目录（避免把下载的 mod 推上去）
+mods/
+
+# 系统文件
+.DS_Store
+Thumbs.db
