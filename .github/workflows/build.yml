@@ -43,7 +43,8 @@ jobs:
         run: |
           BINARY_NAME="Non-existentMinecraftlauncher"
           if [ "${{ matrix.goos }}" = "windows" ]; then BINARY_NAME="${BINARY_NAME}.exe"; fi
-          go build -ldflags="-s -w" -o "$BINARY_NAME" .
+          go build -ldflags="-s -w" -o "${BINARY_NAME}" ./cmd/launcher
+
 
       # --- 打包与上传 ---
       - name: Package Artifacts
