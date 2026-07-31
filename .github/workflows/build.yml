@@ -1,50 +1,66 @@
-name: Build Launcher
+name: Build Multi-Arch Launcher
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [windows]
-        arch: [amd64]
+        include:
+          # Linux 构建
+          - os: linux
+            arch: amd64
+          # Windows 构建
+          - os: windows
+            arch: amd64
 
     steps:
+      # 1. 拉取代码 (升级到 v4)
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
+      # 2. 配置 Go 环境 (升级到 v5，使用 1.25.x 满足 wazero 依赖)
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.25.x' # 已更新版本以支持 wazero v1.12.0
+          go-version: '1.25.x'
           cache: true
 
-      - name: Install go-winres
+      # 3. 仅在 Windows 环境下：安装图标嵌入工具
+      - name: Install go-winres (Windows Only)
+        if: matrix.os == 'windows'
         run: go install github.com/tc-hib/go-winres@latest
 
-      - name: Generate Windows Resources
+      # 4. 仅在 Windows 环境下：生成资源文件
+      - name: Generate Windows Resources (Windows Only)
         if: matrix.os == 'windows'
-        run: |
-          cd cmd/launcher
-          go-winres make
+        run: go-winres make
 
+      # 5. 执行编译 (路径指向 ./cmd/launcher)
       - name: Build Binary
         env:
-          BINARY_NAME: "Non-existentMinecraftLauncher"
+          GOOS: ${{ matrix.os }}
+          GOARCH: ${{ matrix.arch }}
+          CGO_ENABLED: 0
         run: |
+          # 动态定义输出文件名
+          OUTPUT_NAME="Non-existentMinecraftlauncher-${{ matrix.os }}-${{ matrix.arch }}"
           if [ "${{ matrix.os }}" = "windows" ]; then
-            export BINARY_NAME="${BINARY_NAME}.exe"
+            OUTPUT_NAME="${OUTPUT_NAME}.exe"
           fi
-          mkdir -p dist/${{ matrix.os }}-${{ matrix.arch }}
-          go build -o "dist/${{ matrix.os }}-${{ matrix.arch }}/${BINARY_NAME}" ./cmd/launcher
+          
+          echo "Building $OUTPUT_NAME..."
+          go build -ldflags="-s -w" -o "$OUTPUT_NAME" ./cmd/launcher
 
-      - name: Package Artifacts
-        uses: actions/upload-artifact@v3
+      # 6. 上传编译产物 (彻底解决 v3 弃用报错，升级到 v4)
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}-build
-          path: dist/
+          name: launcher-${{ matrix.os }}-${{ matrix.arch }}
+          path: Non-existentMinecraftlauncher-${{ matrix.os }}-${{ matrix.arch }}*
+          retention-days: 7
