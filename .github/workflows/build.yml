@@ -2,9 +2,9 @@ name: Build Multi-Arch Launcher
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -12,55 +12,47 @@ jobs:
     strategy:
       matrix:
         include:
-          # Linux 构建
           - os: linux
             arch: amd64
-          # Windows 构建
+            ext: ""
           - os: windows
             arch: amd64
+            ext: ".exe"
 
     steps:
-      # 1. 拉取代码 (升级到 v4)
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      # 2. 配置 Go 环境 (升级到 v5，使用 1.25.x 满足 wazero 依赖)
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v4
         with:
-          go-version: '1.25.x'
-          cache: true
+          go-version: '1.22'
 
-      # 3. 仅在 Windows 环境下：安装图标嵌入工具
-      - name: Install go-winres (Windows Only)
-        if: matrix.os == 'windows'
-        run: go install github.com/tc-hib/go-winres@latest
-
-      # 4. 仅在 Windows 环境下：生成资源文件
+      # --- 新增：为 Windows 自动生成 winres.json (解决之前的报错) ---
       - name: Generate Windows Resources (Windows Only)
         if: matrix.os == 'windows'
-        run: go-winres make
+        run: |
+          mkdir -p winres
+          cat > winres/winres.json << EOF
+          {
+            "RT_MANIFEST": { "#1": { "0409": { "identity": { "name": "Non-existentMinecraftlauncher", "version": "1.0.0.0" }, "description": "", "minimum-os": "vista", "execution-level": "as invoker", "ui-access": false, "auto-elevate": false, "dpi-awareness": "system", "disable-theming": false, "disable-window-filtering": false } } }
+          }
+          EOF
 
-      # 5. 执行编译 (路径指向 ./cmd/launcher)
+      # --- 核心修复：在编译时开启国内代理 (解决 wazero 下载超时) ---
       - name: Build Binary
         env:
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
           CGO_ENABLED: 0
+          GOPROXY: https://goproxy.cn,direct
         run: |
-          # 动态定义输出文件名
-          OUTPUT_NAME="Non-existentMinecraftlauncher-${{ matrix.os }}-${{ matrix.arch }}"
-          if [ "${{ matrix.os }}" = "windows" ]; then
-            OUTPUT_NAME="${OUTPUT_NAME}.exe"
-          fi
-          
+          OUTPUT_NAME="Non-existentMinecraftlauncher-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}"
           echo "Building $OUTPUT_NAME..."
           go build -ldflags="-s -w" -o "$OUTPUT_NAME" ./cmd/launcher
 
-      # 6. 上传编译产物 (彻底解决 v3 弃用报错，升级到 v4)
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: launcher-${{ matrix.os }}-${{ matrix.arch }}
-          path: Non-existentMinecraftlauncher-${{ matrix.os }}-${{ matrix.arch }}*
-          retention-days: 7
+          name: Non-existentMinecraftlauncher-${{ matrix.os }}-${{ matrix.arch }}
+          path: Non-existentMinecraftlauncher-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.ext }}
