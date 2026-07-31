@@ -35,19 +35,32 @@ jobs:
 
     - name: Prepare Build Environment
       run: |
-        python3 build_launcher.py
+        # 确保根目录下有 build 文件夹
         mkdir -p build
 
-    - name: Build Launcher Binary
-      env:
-        GOOS: ${{ matrix.goos }}
-        GOARCH: ${{ matrix.goarch }}
-        CGO_ENABLED: 0
+    - name: Build binary
       run: |
-        go build -ldflags="-s -w" -o build/launcher-${{ matrix.goos }}-${{ matrix.goarch }} ./cmd/launcher
+        # 判断是否为 Windows 系统，如果是则添加 .exe 后缀
+        if [ "${{ matrix.goos }}" = "windows" ]; then
+          EXT=".exe"
+        else
+          EXT=""
+        fi
+        
+        # 设置输出文件名 (例如: launcher-windows-amd64.exe)
+        OUTPUT_NAME="launcher-${{ matrix.goos }}-${{ matrix.goarch }}${EXT}"
+        
+        echo "Building ${OUTPUT_NAME}..."
+        
+        # 执行交叉编译
+        CGO_ENABLED=0 GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build \
+          -ldflags="-s -w" \
+          -o "build/${OUTPUT_NAME}" \
+          ./cmd/launcher
 
-    - name: Upload Artifact
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: launcher-${{ matrix.goos }}-${{ matrix.goarch }}
-        path: build/launcher-${{ matrix.goos }}-${{ matrix.goarch }}
+        path: build/launcher-${{ matrix.goos }}-${{ matrix.goarch }}*
+        retention-days: 7
