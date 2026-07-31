@@ -342,8 +342,9 @@ def main():
         run_cmd(["go", "mod", "init", MODULE_NAME])
     run_cmd(["go", "mod", "tidy"])
     
-    print("[6/6] Running Launcher...")
-    run_cmd(["go", "run", "./cmd/launcher"])
+    print("[6/6] Compiling Launcher Binary...")
+    # 在 CI 环境中只编译，不运行
+    run_cmd(["go", "build", "-o", "launcher", "./cmd/launcher"])
 
 if __name__ == "__main__":
     main()
