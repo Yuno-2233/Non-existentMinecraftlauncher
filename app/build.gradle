@@ -1,0 +1,12 @@
+
+apply plugin: 'application'
+
+application {
+    mainClass.set('com.launcher.Main')
+}
+
+dependencies {
+    // 引入 Lanterna TUI 库
+    implementation 'com.googlecode.lanterna:lanterna:3.1.1'
+}
+

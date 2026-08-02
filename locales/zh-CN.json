@@ -1,7 +1,0 @@
-{
-  "app.title": "Non-existent MC Launcher",
-  "app.version": "Engine Version: 1.0.0",
-  "menu.switch_lang": "切换语言",
-  "menu.quit": "退出引擎",
-  "status.engine_ready": "引擎就绪，等待 Mod 接入"
-}
