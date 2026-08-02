@@ -1,0 +1,16 @@
+{
+  "name": "non-existentminecraftlauncher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.3"
+  }
+}

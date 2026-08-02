@@ -1,0 +1,15 @@
+{
+  "current_account": {
+    "type": "offline",
+    "username": "a",
+    "uuid": "off-1785594221860"
+  },
+  "saved_accounts": [
+    {
+      "type": "offline",
+      "username": "a",
+      "uuid": "off-1785594221860"
+    }
+  ],
+  "yggdrasil_servers": []
+}
