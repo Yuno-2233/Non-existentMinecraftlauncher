@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
+  workflow_dispatch: # 允许手动触发
 
 jobs:
   build:
@@ -41,37 +41,40 @@ jobs:
 
       - name: Build Executable with boxednode
         run: |
-          # 关键修改：将 src/index.js 改为 main.js
-          boxednode --source main.js --output ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }} --name "${{ env.PROJECT_NAME }}"
+          # 关键修复：添加了 -t x64 参数来指定架构
+          boxednode -s main.js -o ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }} -t x64
 
-      - name: Compress with UPX
-        uses: crazy-max/ghaction-upx@v3
-        with:
-          version: latest
-          files: |
-            ./${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }}
-          args: --best --lzma
+      - name: Compress with UPX (Optional)
+        run: |
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            sudo apt-get install -y upx-ucl
+            upx --best --lzma ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }} || true
+          fi
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.target_os }}
+          name: ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}
           path: ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }}
 
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    
+    if: startsWith(github.ref, 'refs/tags/') # 只有打标签时才发布
+
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
-        
+
       - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            binary-linux/*
-            binary-win/*
+        id: create_release
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: |
+            */*
