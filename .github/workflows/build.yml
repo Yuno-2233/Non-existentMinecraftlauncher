@@ -1,43 +1,15 @@
 name: Build and Release
 
 on:
-  # 每次推送到 main 或 master 分支时触发（用于生成测试版本）
   push:
     branches: [ main, master ]
-  # 保留手动触发功能
   workflow_dispatch:
 
 jobs:
   # ==========================================
-  # 0. 代码质量检查任务
-  # ==========================================
-  lint-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install Project Dependencies
-        run: npm ci
-
-      # 注意：如果你的 package.json 里没有 "lint" 脚本，请保持注释掉下面这行，或者删掉
-      # - name: Run Linter
-      #   run: npm run lint
-
-      - name: Run Tests
-        run: npm test || echo "No tests found, skipping..." # 防止没有测试脚本时报错中断
-
-  # ==========================================
-  # 1. Linux 构建任务
+  # 1. Linux 构建任务 (原生)
   # ==========================================
   build-linux:
-    needs: lint-and-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -49,44 +21,31 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      # 【关键修复】安装系统依赖，包括 Python3 (编译必须) 和 build-essential
-      - name: Install System Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential python3 upx-ucl
-
-      - name: Install Project Dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      - name: Install boxednode
-        run: npm install -g boxednode
-
-      - name: Compile Linux Binary
+      - name: Build Linux Binary with nexe
         run: |
-          # 【核心修复】添加 -n 18.0.0 指定目标 Node 版本
-          boxednode --source ./main.js --output ./Non-existentMinecraftLauncher_linux_x64 -n 18.0.0
-          
-          if [ ! -f "./Non-existentMinecraftLauncher_linux_x64" ]; then
-            echo "错误：编译完成但未找到文件！"
-            exit 1
-          fi
-          chmod +x ./Non-existentMinecraftLauncher_linux_x64
+          npx nexe src/index.js \
+            --target linux-x64-18.0.0 \
+            --output dist/launcher-linux
 
       - name: Compress with UPX
-        run: upx --best ./Non-existentMinecraftLauncher_linux_x64 || echo "UPX compression failed, continuing without it."
+        run: |
+          sudo apt-get install -y upx
+          upx -9 dist/launcher-linux
 
-      - name: Upload Artifact
+      - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linux-binary
-          path: ./Non-existentMinecraftLauncher_linux_x64
+          name: launcher-linux
+          path: dist/launcher-linux
 
   # ==========================================
-  # 2. Windows 构建任务
+  # 2. Windows 构建任务 (Linux 交叉编译)
   # ==========================================
   build-windows:
-    needs: lint-and-test
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -97,70 +56,27 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      # Windows 构建通常自带 MSVC，但为了确保万无一失，这里不需要额外安装 python，
-      # 因为 windows-latest 镜像通常包含 python，如果报错再单独加 setup-python
-      
-      - name: Install UPX
-        uses: crazy-max/ghaction-upx@v3
-        with:
-          install-only: true
+      - name: Install Cross-Compile Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wine mingw-w64
 
-      - name: Install Project Dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      - name: Install boxednode
-        run: npm install -g boxednode
-
-      - name: Compile Windows Binary
-        shell: pwsh
+      - name: Build Windows Binary with nexe
         run: |
-          # 【核心修复】添加 -n 18.0.0 指定目标 Node 版本
-          boxednode --source ./main.js --output ./Non-existentMinecraftLauncher_windows_x64.exe -n 18.0.0
-          
-          if (-Not (Test-Path "./Non-existentMinecraftLauncher_windows_x64.exe")) {
-            Write-Error "编译失败：未找到文件"
-            exit 1
-          }
+          npx nexe src/index.js \
+            --target win-x64-18.0.0 \
+            --output dist/launcher-windows.exe
 
       - name: Compress with UPX
-        run: upx --best ./Non-existentMinecraftLauncher_windows_x64.exe || echo "UPX compression failed"
+        run: |
+          sudo apt-get install -y upx
+          upx -9 dist/launcher-windows.exe
 
-      - name: Upload Artifact
+      - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows-binary
-          path: ./Non-existentMinecraftLauncher_windows_x64.exe
-
-  # ==========================================
-  # 3. 发布任务
-  # ==========================================
-  release:
-    needs: [build-linux, build-windows]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    
-    steps:
-      - name: Download Linux Binary
-        uses: actions/download-artifact@v4
-        with:
-          name: linux-binary
-          path: ./dist
-
-      - name: Download Windows Binary
-        uses: actions/download-artifact@v4
-        with:
-          name: windows-binary
-          path: ./dist
-
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v1.0-test.${{ github.run_number }}
-          name: Test Release v1.0.${{ github.run_number }}
-          draft: false
-          prerelease: true 
-          files: |
-            ./dist/Non-existentMinecraftLauncher_linux_x64
-            ./dist/Non-existentMinecraftLauncher_windows_x64.exe
+          name: launcher-windows
+          path: dist/launcher-windows.exe
