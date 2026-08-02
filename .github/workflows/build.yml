@@ -6,10 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  # ==========================================
-  # 1. Linux 构建任务
-  # ==========================================
-  build-linux:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -18,38 +15,62 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # 【关键修改】使用稳定的 Node 20 环境，避免触发 Node 26 的兼容性问题
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: npm ci  # 确保仓库中有 package-lock.json，否则改用 npm install
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm test
+
+  build-linux:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
 
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          # 必须安装 build-essential (gcc/g++) 和 python3，否则无法编译源码
-          sudo apt-get install -y build-essential python3 upx
+          sudo apt-get install -y build-essential python3 upx-ucl
+
+      - name: Install Project Dependencies
+        run: npm ci
 
       - name: Install boxednode
         run: npm install -g boxednode
 
       - name: Compile Linux Binary
         run: |
-          echo "Starting compilation for Linux..."
-          # 【核心修复】显式指定 -t v20.11.0
-          # 告诉 boxednode 不要自己去拉取 v26，而是用成熟的 v20 源码进行编译
-          boxednode -s main.js -t v20.11.0 -o launcher-linux-x64
+          boxednode --source ./main.js --output ./Non-existentMinecraftLauncher_linux_x64
+          if [ ! -f "./Non-existentMinecraftLauncher_linux_x64" ]; then
+            echo "错误：编译完成但未找到文件！"
+            exit 1
+          fi
+          chmod +x ./Non-existentMinecraftLauncher_linux_x64
 
-          # 压缩体积
-          upx --best --lzma launcher-linux-x64
-          echo "Linux build completed successfully."
+      - name: Compress with UPX
+        run: upx --best ./Non-existentMinecraftLauncher_linux_x64
 
-      - name: Upload Linux Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: launcher-linux-x64
-          path: launcher-linux-x64
+          name: linux-binary
+          path: ./Non-existentMinecraftLauncher_linux_x64
 
-  # ==========================================
-  # 2. Windows 构建任务
-  # ==========================================
   build-windows:
+    needs: lint-and-test
     runs-on: windows-latest
     steps:
       - name: Checkout Code
@@ -58,22 +79,64 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # 同样保持 Node 20 环境
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Project Dependencies
+        run: npm ci
 
       - name: Install boxednode
         run: npm install -g boxednode
 
       - name: Compile Windows Binary
         run: |
-          echo "Starting compilation for Windows..."
-          # Windows 下同样指定目标版本为 v20.11.0
-          # 输出文件名指定为 .exe
-          boxednode -s main.js -t v20.11.0 -o launcher-win-x64.exe
+          boxednode --source ./main.js --output ./Non-existentMinecraftLauncher_windows_x64.exe
+          if (-Not (Test-Path "./Non-existentMinecraftLauncher_windows_x64.exe")) {
+            Write-Error "编译失败：未找到文件"
+            exit 1
+          }
+        shell: pwsh
 
-          echo "Windows build completed successfully."
+      - name: Compress with UPX
+        run: upx --best ./Non-existentMinecraftLauncher_windows_x64.exe
 
-      - name: Upload Windows Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: launcher-win-x64.exe
-          path: launcher-win-x64.exe
+          name: windows-binary
+          path: ./Non-existentMinecraftLauncher_windows_x64.exe
+
+  release:
+    needs: [build-linux, build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download Linux Binary
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-binary
+          path: ./dist
+
+      - name: Download Windows Binary
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-binary
+          path: ./dist
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0-test.${{ github.run_number }}
+          name: Test Release v1.0.${{ github.run_number }}
+          draft: false
+          prerelease: true
+          files: |
+            ./dist/Non-existentMinecraftLauncher_linux_x64
+            ./dist/Non-existentMinecraftLauncher_windows_x64.exe
