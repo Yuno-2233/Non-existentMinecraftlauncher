@@ -11,14 +11,14 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            target: linux-x64
-            output_name: linux-x64
+            target_os: linux
+            output_ext: "" # Linux无后缀
           - os: macos-latest
-            target: darwin-x64
-            output_name: macos-x64
+            target_os: macos
+            output_ext: "" # Mac无后缀
           - os: windows-latest
-            target: win-x64
-            output_name: win-x64
+            target_os: win
+            output_ext: ".exe" # Windows需要.exe后缀
 
     runs-on: ${{ matrix.os }}
 
@@ -38,45 +38,60 @@ jobs:
       - name: Install boxednode Globally
         run: npm install -g boxednode
 
-      # 2. 安装 UPX (用于压缩体积)
+      # 2. 安装 UPX (关键修复：强制使用 bash 运行，解决 Windows PowerShell 报错)
       - name: Install UPX
+        shell: bash 
         run: |
-          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            sudo apt-get install -y upx
-          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-            brew install upx
-          else
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            sudo apt-get update && sudo apt-get install -y upx-ucl
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
             choco install upx --no-progress
           fi
+          # macOS 默认自带或不需要额外复杂安装，若需要可加 brew install upx
 
-      # 3. 使用 boxednode 编译 + UPX 压缩
+      # 3. 编译可执行文件
       - name: Build Executable with boxednode
+        shell: bash
         run: |
-          OUTPUT_NAME="${{ github.event.repository.name }}-${{ matrix.output_name }}"
-          boxednode --source ./main.js -t ${{ matrix.target }} -o $OUTPUT_NAME
+          REPO_NAME="${{ github.event.repository.name }}"
+          TARGET="${{ matrix.target_os }}"
+          EXT="${{ matrix.output_ext }}"
           
-          # 压缩体积（UPX 可将文件缩小 50%-70%）
-          upx --best --lzma $OUTPUT_NAME || echo "UPX compression skipped for this platform"
+          OUTPUT_FILE="${REPO_NAME}-${TARGET}${EXT}"
+          
+          echo "Building for $TARGET..."
+          
+          # 执行编译，指定入口 main.js 和目标平台
+          boxednode --source ./main.js -t $TARGET -o $OUTPUT_FILE
+          
+          # 如果生成了文件，尝试用 UPX 压缩以减小体积
+          if [ -f "$OUTPUT_FILE" ]; then
+            echo "Compressing with UPX..."
+            upx --best --lzma $OUTPUT_FILE || echo "UPX compression failed or skipped."
+          else
+            echo "Error: Build failed, file not found."
+            exit 1
+          fi
 
       # 4. 上传构建产物
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.output_name }}
-          path: ${{ github.event.repository.name }}-${{ matrix.output_name }}
+          name: build-${{ matrix.target_os }}
+          path: ${{ github.event.repository.name }}-${{ matrix.target_os }}${{ matrix.output_ext }}
 
   release:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    
     steps:
-      - name: Download all artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v4
-
+        
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         with:
-          files: |
-            */*
+          files: build-*/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
