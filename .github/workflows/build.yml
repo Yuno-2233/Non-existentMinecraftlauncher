@@ -1,0 +1,82 @@
+name: Build and Release Binaries
+
+on:
+  push:
+    tags:
+      - 'v*' # 当推送 v1.0.0 这样的标签时触发
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux
+            arch: x64
+          - os: macos-latest
+            target: macos
+            arch: x64
+          - os: windows-latest
+            target: win
+            arch: x64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install pkg Globally
+        run: npm install -g @yao-pkg/pkg
+
+      - name: Build Executable
+        shell: bash
+        run: |
+          # 根据操作系统自动选择图标文件
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            ICON_FILE="icon.ico"
+          else
+            ICON_FILE="icon.png"
+          fi
+          
+          # 检查图标文件是否存在，如果不存在则不传图标参数
+          if [ -f "$ICON_FILE" ]; then
+            ICON_PARAM="--icon $ICON_FILE"
+          else
+            ICON_PARAM=""
+          fi
+          
+          # 执行打包命令
+          pkg . --targets node20-${{ matrix.target }}-${{ matrix.arch }} --output dist/Non-existent-MC-Launcher $ICON_PARAM
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: launcher-${{ matrix.target }}-${{ matrix.arch }}
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true

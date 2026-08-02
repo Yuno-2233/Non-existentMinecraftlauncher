@@ -1,16 +1,9 @@
 {
-  "name": "non-existentminecraftlauncher",
+  "name": "non-existent-mc-launcher",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "main.js",
+  "bin": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "@rollup/plugin-node-resolve": "^16.0.3"
+    "start": "node main.js"
   }
 }
