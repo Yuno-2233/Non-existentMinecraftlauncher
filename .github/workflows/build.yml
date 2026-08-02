@@ -3,7 +3,7 @@ name: Build and Release Binaries
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*' # 当推送 v1.0.0 这样的标签时触发
 
 jobs:
   build:
@@ -41,57 +41,70 @@ jobs:
       - name: Install UPX
         run: |
           if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            sudo apt-get update && sudo apt-get install -y upx
+            sudo apt-get update && sudo apt-get install -y upx-ucl
           elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
             brew install upx
-          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          else
             choco install upx
           fi
 
+      # 【关键修改】指定入口文件为 ./main.js
       - name: Build Executable with boxednode
-        shell: bash
         run: |
-          # 1. 生成文件名：仓库名-系统-架构-版本号
-          FILE_NAME="${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}-${{ github.ref_name }}"
+          # 定义输出文件名：仓库名-系统-架构
+          OUTPUT_NAME="${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}"
           
-          # Windows 自动加 .exe 后缀
-          if [[ "${{ matrix.target }}" == "win" ]]; then
-            FILE_NAME="${FILE_NAME}.exe"
-          fi
+          echo "Starting build for ${{ matrix.target }}..."
+          # 注意：boxednode 编译非常慢，可能需要 5-15 分钟，请耐心等待
+          boxednode --source ./main.js -o $OUTPUT_NAME
           
-          # 2. 使用 boxednode 打包
-          # -s: 源文件 (入口文件)
-          # -t: 目标文件路径
-          # -n: 指定 Node.js 版本
-          boxednode -s index.js -t dist/$FILE_NAME -n 20
+          echo "Build finished. File size before UPX:"
+          ls -lh $OUTPUT_NAME
 
       - name: Compress with UPX
-        shell: bash
         run: |
-          # 极限压缩
-          upx --best --lzma dist/* || true
-          ls -lh dist/
+          OUTPUT_NAME="${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}"
+          
+          # Windows下需要加 .exe 后缀
+          if [[ "${{ matrix.target }}" == "win" ]]; then
+             FILE_PATH="${OUTPUT_NAME}.exe"
+          else
+             FILE_PATH="${OUTPUT_NAME}"
+          fi
+
+          echo "Compressing $FILE_PATH..."
+          upx --best --lzma "$FILE_PATH" || echo "UPX compression failed or skipped (file might be protected)"
+          
+          echo "File size after UPX:"
+          ls -lh "$FILE_PATH"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: launcher-${{ matrix.target }}-${{ matrix.arch }}
-          path: dist/*
+          name: binaries-${{ matrix.target }}-${{ matrix.arch }}
+          path: |
+            ${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}
+            ${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}.exe
 
   release:
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
+    if: startsWith(github.ref, 'refs/tags/')
+    
     steps:
-      - name: Download All Artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          path: ./binaries
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: artifacts/**/*
-          generate_release_notes: true
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: ./binaries/**/*
