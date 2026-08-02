@@ -1,4 +1,4 @@
-name: Build and Release Binaries (boxednode + UPX)
+name: Build and Release Binaries
 
 on:
   push:
@@ -8,48 +8,72 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest # 统一使用 Linux 环境
-    
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-          # 1. 构建 Linux 原生版本
           - target: linux
-            output_name: launcher-linux-x64
+            final_name: launcher-linux-x64
             setup_cmd: "sudo apt-get update && sudo apt-get install -y upx"
-            # 这里的逻辑改为：先编译，再重命名，最后压缩
-            build_cmd: "boxednode -s main.js && mv main launcher-linux-x64 && upx --best --lzma launcher-linux-x64"
+            # 关键修复：使用 -o 强制指定输出文件名，不再依赖默认行为
+            build_cmd: "boxednode -s main.js -o launcher-linux-x64 && upx --best --lzma launcher-linux-x64"
             
-          # 2. 构建 Windows 交叉编译版本
           - target: win
-            output_name: launcher-win-x64.exe
-            setup_cmd: "sudo apt-get update && sudo apt-get install -y mingw-w64 upx"
-            # Windows 同理：先编译(默认生成 main.exe)，再重命名，最后压缩
-            build_cmd: "boxednode -s main.js -t win-x64 && mv main.exe launcher-win-x64.exe && upx --best --lzma launcher-win-x64.exe"
+            final_name: launcher-win-x64.exe
+            setup_cmd: "sudo apt-get update && sudo apt-get install -y upx mingw-w64"
+            # 关键修复：使用 -o 强制指定输出文件名，包含 .exe 后缀
+            build_cmd: "boxednode -s main.js -t win32 -a x64 -o launcher-win-x64.exe && upx --best --lzma launcher-win-x64.exe"
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
+          
       - name: Install Dependencies
         run: npm install
-
+        
       - name: Install boxednode Globally
         run: npm install -g boxednode
-
+        
       - name: Setup Build Environment & Compile
-        run: ${{ matrix.setup_cmd }}
-
-      - name: Build & Compress
-        run: ${{ matrix.build_cmd }}
-
+        run: |
+          ${{ matrix.setup_cmd }}
+          ${{ matrix.build_cmd }}
+          
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.output_name }}
-          path: ${{ matrix.output_name }}
+          name: ${{ matrix.final_name }}
+          path: ./${{ matrix.final_name }}
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download Linux Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: launcher-linux-x64
+          
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: launcher-win-x64.exe
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: |
+            launcher-linux-x64
+            launcher-win-x64.exe
