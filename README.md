@@ -29,7 +29,7 @@ Git
 安装与运行
 
 克隆本仓库到本地：
-git clone https://github.com/你的用户名/Non-existentMinecraftlauncher.git
+git clone https://github.com/Yuno-2232/Non-existentMinecraftlauncher.git
 
 进入项目目录：
 cd Non-existentMinecraftlauncher

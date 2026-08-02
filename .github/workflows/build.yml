@@ -40,22 +40,30 @@ jobs:
       - name: Build Executable
         shell: bash
         run: |
-          # 根据操作系统自动选择图标文件
+          # 1. 根据操作系统自动选择图标文件
           if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
             ICON_FILE="icon.ico"
           else
             ICON_FILE="icon.png"
           fi
           
-          # 检查图标文件是否存在，如果不存在则不传图标参数
+          # 检查图标文件是否存在
+          ICON_PARAM=""
           if [ -f "$ICON_FILE" ]; then
             ICON_PARAM="--icon $ICON_FILE"
-          else
-            ICON_PARAM=""
+          fi
+          
+          # 2. 按照你的要求生成文件名：仓库名-系统-架构-版本号
+          # 例如: Non-existentMinecraftlauncher-linux-x64-v1.0.0
+          FILE_NAME="${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}-${{ github.ref_name }}"
+          
+          # 如果是 Windows 系统，自动加上 .exe 后缀
+          if [[ "${{ matrix.target }}" == "win" ]]; then
+            FILE_NAME="${FILE_NAME}.exe"
           fi
           
           # 执行打包命令
-          pkg . --targets node20-${{ matrix.target }}-${{ matrix.arch }} --output dist/Non-existent-MC-Launcher $ICON_PARAM
+          pkg . --targets node20-${{ matrix.target }}-${{ matrix.arch }} --output dist/$FILE_NAME $ICON_PARAM
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
