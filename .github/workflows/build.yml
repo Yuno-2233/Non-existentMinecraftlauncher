@@ -1,13 +1,12 @@
 name: Build and Release
 
+# 去掉 tags 限制，改为 push 到 main/master 分支或手动触发时运行
 on:
   push:
-    tags:
-      - 'v*'
-  workflow_dispatch:
+    branches: [ main, master ] # 你可以根据实际分支名修改
+  workflow_dispatch: # 允许手动点击按钮运行
 
 jobs:
-  # 1. 构建 Linux 版本
   build-linux:
     runs-on: ubuntu-latest
     steps:
@@ -19,21 +18,19 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Build Tools & UPX
+      - name: Install System Dependencies (Crucial)
         run: |
-          # 【关键修复】安装编译 Node.js 源码必须的 C++ 编译器和 Python
           sudo apt-get update
+          # 安装编译 Node.js 源码必须的 C++ 编译器、Make 和 Python
           sudo apt-get install -y build-essential python3 upx
-          
-          # 安装 boxednode
-          npm install boxednode -g
+
+      - name: Install boxednode
+        run: npm install -g boxednode
 
       - name: Compile Linux Binary
         run: |
-          # -t v18.0.0: 指定目标 Node 版本 (必须与 setup-node 版本对应或兼容)
-          # -o launcher-linux-x64: 指定输出文件名
+          # -t v18.0.0 指定目标版本，-o 指定输出文件名
           boxednode -s main.js -t v18.0.0 -o launcher-linux-x64
-          
           # 压缩体积
           upx --best --lzma launcher-linux-x64
 
@@ -43,9 +40,8 @@ jobs:
           name: launcher-linux-x64
           path: launcher-linux-x64
 
-  # 2. 构建 Windows 版本
   build-windows:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # 继续使用 Ubuntu 进行交叉编译
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -55,20 +51,18 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Build Tools & UPX
+      - name: Install System Dependencies
         run: |
           sudo apt-get update
-          # Windows 交叉编译同样需要 build-essential
           sudo apt-get install -y build-essential python3 upx
-          npm install boxednode -g
+
+      - name: Install boxednode
+        run: npm install -g boxednode
 
       - name: Compile Windows Binary
         run: |
-          # --target=win 指定交叉编译为 Windows
-          # -o launcher-win-x64.exe 强制指定 .exe 后缀
-          boxednode -s main.js -t v18.0.0 --target=win -o launcher-win-x64.exe
-          
-          # 压缩体积
+          # 交叉编译 Windows 版本
+          boxednode -s main.js -t v18.0.0 -o launcher-win-x64.exe --cross-compile-prefix=x86_64-w64-mingw32-
           upx --best --lzma launcher-win-x64.exe
 
       - name: Upload Windows Artifact
@@ -76,27 +70,3 @@ jobs:
         with:
           name: launcher-win-x64
           path: launcher-win-x64.exe
-
-  # 3. 发布 Release
-  release:
-    needs: [build-linux, build-windows]
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    steps:
-      - name: Download Linux Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: launcher-linux-x64
-
-      - name: Download Windows Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: launcher-win-x64
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            launcher-linux-x64
-            launcher-win-x64.exe
-          generate_release_notes: true
