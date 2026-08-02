@@ -19,16 +19,22 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Dependencies & UPX
+      - name: Install Build Tools & UPX
         run: |
-          npm install boxednode -g
+          # 【关键修复】安装编译 Node.js 源码必须的 C++ 编译器和 Python
           sudo apt-get update
-          sudo apt-get install -y upx
+          sudo apt-get install -y build-essential python3 upx
+          
+          # 安装 boxednode
+          npm install boxednode -g
 
       - name: Compile Linux Binary
-        # 关键点：加上 -t v18.0.0 指定版本，加上 -o 指定输出文件名
         run: |
+          # -t v18.0.0: 指定目标 Node 版本 (必须与 setup-node 版本对应或兼容)
+          # -o launcher-linux-x64: 指定输出文件名
           boxednode -s main.js -t v18.0.0 -o launcher-linux-x64
+          
+          # 压缩体积
           upx --best --lzma launcher-linux-x64
 
       - name: Upload Linux Artifact
@@ -37,7 +43,7 @@ jobs:
           name: launcher-linux-x64
           path: launcher-linux-x64
 
-  # 2. 构建 Windows 版本 (交叉编译)
+  # 2. 构建 Windows 版本
   build-windows:
     runs-on: ubuntu-latest
     steps:
@@ -49,38 +55,48 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Dependencies & UPX
+      - name: Install Build Tools & UPX
         run: |
-          npm install boxednode -g
           sudo apt-get update
-          sudo apt-get install -y upx mingw-w64
+          # Windows 交叉编译同样需要 build-essential
+          sudo apt-get install -y build-essential python3 upx
+          npm install boxednode -g
 
       - name: Compile Windows Binary
-        # 关键点：Windows 交叉编译需要指定 arch x64 和 platform win32
         run: |
-          boxednode -s main.js -t v18.0.0 -o launcher-win-x64.exe --arch x64 --platform win32
+          # --target=win 指定交叉编译为 Windows
+          # -o launcher-win-x64.exe 强制指定 .exe 后缀
+          boxednode -s main.js -t v18.0.0 --target=win -o launcher-win-x64.exe
+          
+          # 压缩体积
           upx --best --lzma launcher-win-x64.exe
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: launcher-win-x64.exe
+          name: launcher-win-x64
           path: launcher-win-x64.exe
 
   # 3. 发布 Release
   release:
     needs: [build-linux, build-windows]
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     steps:
-      - name: Download Artifacts
+      - name: Download Linux Artifact
         uses: actions/download-artifact@v4
         with:
-          path: ./dist
+          name: launcher-linux-x64
+
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: launcher-win-x64
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
         with:
-          files: ./dist/**/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            launcher-linux-x64
+            launcher-win-x64.exe
+          generate_release_notes: true
