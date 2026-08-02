@@ -1,27 +1,29 @@
 name: Build and Release
 
-# 去掉 tags 限制，改为 push 到 main/master 分支或手动触发时运行
 on:
   push:
-    branches: [ main, master ] # 你可以根据实际分支名修改
-  workflow_dispatch: # 允许手动点击按钮运行
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
+  # ==========================================
+  # 1. Linux 构建任务
+  # ==========================================
   build-linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20' # 【关键修改】使用稳定的 Node 20 环境，避免触发 Node 26 的兼容性问题
 
-      - name: Install System Dependencies (Crucial)
+      - name: Install System Dependencies
         run: |
           sudo apt-get update
-          # 安装编译 Node.js 源码必须的 C++ 编译器、Make 和 Python
+          # 必须安装 build-essential (gcc/g++) 和 python3，否则无法编译源码
           sudo apt-get install -y build-essential python3 upx
 
       - name: Install boxednode
@@ -29,10 +31,14 @@ jobs:
 
       - name: Compile Linux Binary
         run: |
-          # -t v18.0.0 指定目标版本，-o 指定输出文件名
-          boxednode -s main.js -t v18.0.0 -o launcher-linux-x64
+          echo "Starting compilation for Linux..."
+          # 【核心修复】显式指定 -t v20.11.0
+          # 告诉 boxednode 不要自己去拉取 v26，而是用成熟的 v20 源码进行编译
+          boxednode -s main.js -t v20.11.0 -o launcher-linux-x64
+
           # 压缩体积
           upx --best --lzma launcher-linux-x64
+          echo "Linux build completed successfully."
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
@@ -40,33 +46,34 @@ jobs:
           name: launcher-linux-x64
           path: launcher-linux-x64
 
+  # ==========================================
+  # 2. Windows 构建任务
+  # ==========================================
   build-windows:
-    runs-on: ubuntu-latest # 继续使用 Ubuntu 进行交叉编译
+    runs-on: windows-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-
-      - name: Install System Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential python3 upx
+          node-version: '20' # 同样保持 Node 20 环境
 
       - name: Install boxednode
         run: npm install -g boxednode
 
       - name: Compile Windows Binary
         run: |
-          # 交叉编译 Windows 版本
-          boxednode -s main.js -t v18.0.0 -o launcher-win-x64.exe --cross-compile-prefix=x86_64-w64-mingw32-
-          upx --best --lzma launcher-win-x64.exe
+          echo "Starting compilation for Windows..."
+          # Windows 下同样指定目标版本为 v20.11.0
+          # 输出文件名指定为 .exe
+          boxednode -s main.js -t v20.11.0 -o launcher-win-x64.exe
+
+          echo "Windows build completed successfully."
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: launcher-win-x64
+          name: launcher-win-x64.exe
           path: launcher-win-x64.exe
