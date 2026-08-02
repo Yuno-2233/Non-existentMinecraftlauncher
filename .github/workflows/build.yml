@@ -4,14 +4,13 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   build:
     strategy:
       matrix:
         include:
-          # 只保留 Linux 和 Windows
           - os: ubuntu-latest
             target_os: linux
             output_ext: ""
@@ -33,30 +32,18 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # 1. 安装 boxednode
       - name: Install boxednode Globally
         run: npm install -g boxednode
 
-      # 2. 获取 package.json 中的 name 字段作为输出文件名
       - name: Get Project Name
         id: get_name
         run: echo "PROJECT_NAME=$(node -p "require('./package.json').name")" >> $GITHUB_ENV
 
-      # 3. 使用 boxednode 构建可执行文件
       - name: Build Executable with boxednode
         run: |
-          # 确保 src/index.js 存在，如果不存在请检查你的项目结构
-          if [ ! -f "src/index.js" ]; then
-            echo "Error: src/index.js not found!"
-            exit 1
-          fi
-          
-          # 构建命令
-          # --output 指定输出文件名
-          # --name 指定内部产品名称
-          boxednode --source src/index.js --output ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }} --name "${{ env.PROJECT_NAME }}"
+          # 关键修改：将 src/index.js 改为 main.js
+          boxednode --source main.js --output ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }} --name "${{ env.PROJECT_NAME }}"
 
-      # 4. 压缩文件 (可选，使用 UPX)
       - name: Compress with UPX
         uses: crazy-max/ghaction-upx@v3
         with:
@@ -65,7 +52,6 @@ jobs:
             ./${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }}
           args: --best --lzma
 
-      # 5. 上传构建产物
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -75,7 +61,7 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/') # 仅在打标签时发布
+    if: startsWith(github.ref, 'refs/tags/')
     
     steps:
       - name: Download Artifacts
