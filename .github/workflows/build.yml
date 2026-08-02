@@ -1,4 +1,4 @@
-name: Build and Release Binaries
+name: Build and Release Binaries (boxednode + UPX)
 
 on:
   push:
@@ -8,17 +8,22 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest # 统一使用 Linux 环境，速度快且稳定
+    
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            target_os: linux
-            output_ext: ""
-          - os: windows-latest
-            target_os: win
-            output_ext: ".exe"
-
-    runs-on: ${{ matrix.os }}
+          # 1. 构建 Linux 原生版本
+          - target: linux
+            output_name: launcher-linux-x64
+            setup_cmd: "sudo apt-get update && sudo apt-get install -y upx"
+            build_cmd: "boxednode -s main.js -o launcher-linux-x64 -t x64"
+            
+          # 2. 构建 Windows 交叉编译版本
+          - target: win
+            output_name: launcher-win-x64.exe
+            setup_cmd: "sudo apt-get update && sudo apt-get install -y mingw-w64 upx"
+            build_cmd: "boxednode -s main.js -o launcher-win-x64.exe -t win-x64"
 
     steps:
       - name: Checkout Code
@@ -35,47 +40,39 @@ jobs:
       - name: Install boxednode Globally
         run: npm install -g boxednode
 
-      - name: Get Project Name
-        id: project_name
-        run: echo "PROJECT_NAME=$(node -p "require('./package.json').name")" >> $GITHUB_ENV
-
-      - name: Build Executable with boxednode
+      - name: Setup Build Environment & Compile
         run: |
-          # 关键修复：硬编码 target 为 x64，彻底避开后缀名干扰
-          if [ "${{ matrix.target_os }}" = "win" ]; then
-            echo "Building for Windows x64..."
-            boxednode -s main.js -o ${{ env.PROJECT_NAME }}-win-x64.exe -t x64
-          else
-            echo "Building for Linux x64..."
-            boxednode -s main.js -o ${{ env.PROJECT_NAME }}-linux-x64 -t x64
-          fi
+          ${{ matrix.setup_cmd }}
+          ${{ matrix.build_cmd }}
 
       - name: Compress with UPX (Optional)
         run: |
-          if [ "${{ matrix.target_os }}" = "linux" ]; then
-            sudo apt-get install -y upx-ucl
-            upx --best --lzma ${{ env.PROJECT_NAME }}-linux-x64 || true
+          if [ "${{ matrix.target }}" = "win" ]; then
+            upx --best --lzma launcher-win-x64.exe
+          else
+            upx --best --lzma launcher-linux-x64
           fi
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}-x64
-          path: ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}-x64${{ matrix.output_ext }}
+          name: ${{ matrix.output_name }}
+          path: ${{ matrix.output_name }}
 
   release:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
+    
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
-
+        
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            */*.exe
-            */non-existent-mc-launcher-linux-x64
+            launcher-linux-x64
+            launcher-win-x64.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
