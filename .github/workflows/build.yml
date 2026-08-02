@@ -3,7 +3,7 @@ name: Build and Release Binaries
 on:
   push:
     tags:
-      - 'v*' # 当推送 v1.0.0 这样的标签时触发
+      - 'v*'
 
 jobs:
   build:
@@ -11,14 +11,14 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            target: linux
-            arch: x64
+            target: linux-x64
+            output_name: linux-x64
           - os: macos-latest
-            target: macos
-            arch: x64
+            target: darwin-x64
+            output_name: macos-x64
           - os: windows-latest
-            target: win
-            arch: x64
+            target: win-x64
+            output_name: win-x64
 
     runs-on: ${{ matrix.os }}
 
@@ -34,77 +34,49 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # 【修改】安装 boxednode 替代 pkg/nexe
+      # 1. 安装 boxednode
       - name: Install boxednode Globally
         run: npm install -g boxednode
 
+      # 2. 安装 UPX (用于压缩体积)
       - name: Install UPX
         run: |
           if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            sudo apt-get update && sudo apt-get install -y upx-ucl
+            sudo apt-get install -y upx
           elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
             brew install upx
           else
-            choco install upx
+            choco install upx --no-progress
           fi
 
-      # 【关键修改】指定入口文件为 ./main.js
+      # 3. 使用 boxednode 编译 + UPX 压缩
       - name: Build Executable with boxednode
         run: |
-          # 定义输出文件名：仓库名-系统-架构
-          OUTPUT_NAME="${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}"
+          OUTPUT_NAME="${{ github.event.repository.name }}-${{ matrix.output_name }}"
+          boxednode --source ./main.js -t ${{ matrix.target }} -o $OUTPUT_NAME
           
-          echo "Starting build for ${{ matrix.target }}..."
-          # 注意：boxednode 编译非常慢，可能需要 5-15 分钟，请耐心等待
-          boxednode --source ./main.js -o $OUTPUT_NAME
-          
-          echo "Build finished. File size before UPX:"
-          ls -lh $OUTPUT_NAME
+          # 压缩体积（UPX 可将文件缩小 50%-70%）
+          upx --best --lzma $OUTPUT_NAME || echo "UPX compression skipped for this platform"
 
-      - name: Compress with UPX
-        run: |
-          OUTPUT_NAME="${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}"
-          
-          # Windows下需要加 .exe 后缀
-          if [[ "${{ matrix.target }}" == "win" ]]; then
-             FILE_PATH="${OUTPUT_NAME}.exe"
-          else
-             FILE_PATH="${OUTPUT_NAME}"
-          fi
-
-          echo "Compressing $FILE_PATH..."
-          upx --best --lzma "$FILE_PATH" || echo "UPX compression failed or skipped (file might be protected)"
-          
-          echo "File size after UPX:"
-          ls -lh "$FILE_PATH"
-
+      # 4. 上传构建产物
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: binaries-${{ matrix.target }}-${{ matrix.arch }}
-          path: |
-            ${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}
-            ${{ github.event.repository.name }}-${{ matrix.target }}-${{ matrix.arch }}.exe
+          name: ${{ matrix.output_name }}
+          path: ${{ github.event.repository.name }}-${{ matrix.output_name }}
 
   release:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
-    
     steps:
-      - name: Download Artifacts
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
-        with:
-          path: ./binaries
 
       - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            */*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-          files: ./binaries/**/*
