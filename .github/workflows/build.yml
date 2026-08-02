@@ -1,82 +1,66 @@
 name: Build and Release
 
+# 去掉 tags 限制，改为 push 到 main/master 分支或手动触发时运行
 on:
   push:
-    branches: [ main, master ]
+分支: [ main, master ]
   workflow_dispatch:
 
 jobs:
-  # ==========================================
-  # 1. Linux 构建任务 (原生)
-  # ==========================================
   build-linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
 
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Linux Binary with nexe
+      - name: Install System Dependencies (Crucial)
         run: |
-          npx nexe src/index.js \
-            --target linux-x64-18.0.0 \
-            --output dist/launcher-linux
+          sudo apt-get update
+          # 安装编译 Node.js 源码必须的 C++ 编译器、Make 和 Python
+          sudo apt-get install -y build-essential python3 upx
 
       - name: Compress with UPX
         run: |
-          sudo apt-get install -y upx
-          upx -9 dist/launcher-linux
+          # -t v18.0.0 指定目标版本，-o 指定输出文件名
+          boxednode -s main.js -t v18.0.0 -o launcher-linux-x64
+          # 压缩体积
+          upx --best --lzma launcher-linux-x64
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
         with:
           name: launcher-linux
-          path: dist/launcher-linux
+          path: launcher-linux-x64
 
-  # ==========================================
-  # 2. Windows 构建任务 (Linux 交叉编译)
-  # ==========================================
   build-windows:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # 继续使用 Ubuntu 进行交叉编译
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3 upx
 
       - name: Install Cross-Compile Toolchain
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wine mingw-w64
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Windows Binary with nexe
-        run: |
-          npx nexe src/index.js \
-            --target win-x64-18.0.0 \
-            --output dist/launcher-windows.exe
-
-      - name: Compress with UPX
-        run: |
-          sudo apt-get install -y upx
-          upx -9 dist/launcher-windows.exe
+          # 交叉编译 Windows 版本
+          boxednode -s main.js -t v18.0.0 -o launcher-win-x64.exe --cross-compile-prefix=x86_64-w64-mingw32-
+          upx --best --lzma launcher-win-x64.exe
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: launcher-windows
-          path: dist/launcher-windows.exe
+          name: launcher-win-x64
+          path: launcher-win-x64.exe
