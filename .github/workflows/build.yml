@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest # 统一使用 Linux 环境，速度快且稳定
+    runs-on: ubuntu-latest # 统一使用 Linux 环境
     
     strategy:
       matrix:
@@ -17,13 +17,15 @@ jobs:
           - target: linux
             output_name: launcher-linux-x64
             setup_cmd: "sudo apt-get update && sudo apt-get install -y upx"
-            build_cmd: "boxednode -s main.js -o launcher-linux-x64 -t x64"
+            # 这里的逻辑改为：先编译，再重命名，最后压缩
+            build_cmd: "boxednode -s main.js && mv main launcher-linux-x64 && upx --best --lzma launcher-linux-x64"
             
           # 2. 构建 Windows 交叉编译版本
           - target: win
             output_name: launcher-win-x64.exe
             setup_cmd: "sudo apt-get update && sudo apt-get install -y mingw-w64 upx"
-            build_cmd: "boxednode -s main.js -o launcher-win-x64.exe -t win-x64"
+            # Windows 同理：先编译(默认生成 main.exe)，再重命名，最后压缩
+            build_cmd: "boxednode -s main.js -t win-x64 && mv main.exe launcher-win-x64.exe && upx --best --lzma launcher-win-x64.exe"
 
     steps:
       - name: Checkout Code
@@ -41,38 +43,13 @@ jobs:
         run: npm install -g boxednode
 
       - name: Setup Build Environment & Compile
-        run: |
-          ${{ matrix.setup_cmd }}
-          ${{ matrix.build_cmd }}
+        run: ${{ matrix.setup_cmd }}
 
-      - name: Compress with UPX (Optional)
-        run: |
-          if [ "${{ matrix.target }}" = "win" ]; then
-            upx --best --lzma launcher-win-x64.exe
-          else
-            upx --best --lzma launcher-linux-x64
-          fi
+      - name: Build & Compress
+        run: ${{ matrix.build_cmd }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.output_name }}
           path: ${{ matrix.output_name }}
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
-    
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            launcher-linux-x64
-            launcher-win-x64.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
