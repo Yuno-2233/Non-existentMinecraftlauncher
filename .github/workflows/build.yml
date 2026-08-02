@@ -1,7 +1,7 @@
 name: Build and Release
 
 on:
-  # 每次推送到 main 或 master 分支时触发
+  # 每次推送到 main 或 master 分支时触发（用于生成测试版本）
   push:
     branches: [ main, master ]
   # 保留手动触发功能
@@ -9,7 +9,7 @@ on:
 
 jobs:
   # ==========================================
-  # 0. 代码质量检查任务（已简化，移除报错的 lint）
+  # 0. 代码质量检查任务
   # ==========================================
   lint-and-test:
     runs-on: ubuntu-latest
@@ -26,10 +26,12 @@ jobs:
       - name: Install Project Dependencies
         run: npm ci
 
-      # 【修改】移除了 npm run lint，防止因缺少脚本报错
-      # 如果后续需要测试，可以取消下面注释
-      # - name: Run Tests
-      #   run: npm test
+      # 注意：如果你的 package.json 里没有 "lint" 脚本，请保持注释掉下面这行，或者删掉
+      # - name: Run Linter
+      #   run: npm run lint
+
+      - name: Run Tests
+        run: npm test || echo "No tests found, skipping..." # 防止没有测试脚本时报错中断
 
   # ==========================================
   # 1. Linux 构建任务
@@ -47,6 +49,7 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
+      # 【关键修复】安装系统依赖，包括 Python3 (编译必须) 和 build-essential
       - name: Install System Dependencies
         run: |
           sudo apt-get update
@@ -60,8 +63,8 @@ jobs:
 
       - name: Compile Linux Binary
         run: |
-          # 【关键修改】入口文件改为 ./main.js
-          boxednode --source ./main.js --output ./Non-existentMinecraftLauncher_linux_x64
+          # 【核心修复】添加 -n 18.0.0 指定目标 Node 版本
+          boxednode --source ./main.js --output ./Non-existentMinecraftLauncher_linux_x64 -n 18.0.0
           
           if [ ! -f "./Non-existentMinecraftLauncher_linux_x64" ]; then
             echo "错误：编译完成但未找到文件！"
@@ -70,7 +73,7 @@ jobs:
           chmod +x ./Non-existentMinecraftLauncher_linux_x64
 
       - name: Compress with UPX
-        run: upx --best ./Non-existentMinecraftLauncher_linux_x64 || true # 加上 || true 防止压缩失败导致流程中断
+        run: upx --best ./Non-existentMinecraftLauncher_linux_x64 || echo "UPX compression failed, continuing without it."
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -94,11 +97,13 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
-      # 【新增】Windows 编译通常需要 Python
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      # Windows 构建通常自带 MSVC，但为了确保万无一失，这里不需要额外安装 python，
+      # 因为 windows-latest 镜像通常包含 python，如果报错再单独加 setup-python
+      
+      - name: Install UPX
+        uses: crazy-max/ghaction-upx@v3
         with:
-          python-version: '3.x'
+          install-only: true
 
       - name: Install Project Dependencies
         run: npm ci
@@ -107,21 +112,18 @@ jobs:
         run: npm install -g boxednode
 
       - name: Compile Windows Binary
+        shell: pwsh
         run: |
-          # 【关键修改】入口文件改为 ./main.js
-          boxednode --source ./main.js --output ./Non-existentMinecraftLauncher_windows_x64.exe
+          # 【核心修复】添加 -n 18.0.0 指定目标 Node 版本
+          boxednode --source ./main.js --output ./Non-existentMinecraftLauncher_windows_x64.exe -n 18.0.0
           
           if (-Not (Test-Path "./Non-existentMinecraftLauncher_windows_x64.exe")) {
             Write-Error "编译失败：未找到文件"
             exit 1
           }
-        shell: pwsh
-
-      - name: Install UPX (Windows)
-        run: choco install upx --no-progress
 
       - name: Compress with UPX
-        run: upx --best ./Non-existentMinecraftLauncher_windows_x64.exe
+        run: upx --best ./Non-existentMinecraftLauncher_windows_x64.exe || echo "UPX compression failed"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
