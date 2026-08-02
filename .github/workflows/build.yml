@@ -1,22 +1,19 @@
 name: Build and Release Binaries
 
-# 允许通过标签推送触发，也允许在网页端手动点击触发
 on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch: # 添加这一行以启用手动运行按钮
+  workflow_dispatch: # 允许手动触发
 
 jobs:
   build:
     strategy:
       matrix:
         include:
+          # 只保留 Linux 和 Windows
           - os: ubuntu-latest
             target_os: linux
-            output_ext: ""
-          - os: macos-latest
-            target_os: macos
             output_ext: ""
           - os: windows-latest
             target_os: win
@@ -40,71 +37,55 @@ jobs:
       - name: Install boxednode Globally
         run: npm install -g boxednode
 
-      # 2. 安装 UPX (使用 shell: bash 确保跨平台兼容)
-      - name: Install UPX
-        shell: bash
-        run: |
-          if [[ "${{ runner.os }}" == "Linux" ]]; then
-            sudo apt-get update && sudo apt-get install -y upx-ucl
-          elif [[ "${{ runner.os }}" == "macOS" ]]; then
-            brew install upx
-          elif [[ "${{ runner.os }}" == "Windows" ]]; then
-            choco install upx --no-progress
-          fi
+      # 2. 获取 package.json 中的 name 字段作为输出文件名
+      - name: Get Project Name
+        id: get_name
+        run: echo "PROJECT_NAME=$(node -p "require('./package.json').name")" >> $GITHUB_ENV
 
-      # 3. 执行构建
+      # 3. 使用 boxednode 构建可执行文件
       - name: Build Executable with boxednode
-        shell: bash
         run: |
-          # 获取 package.json 中的 name 字段作为输出文件名
-          APP_NAME=$(node -p "require('./package.json').name")
-          
-          echo "Building for ${{ matrix.target_os }}..."
-          
-          # 运行 boxednode 命令
-          # -s: 源文件入口
-          # -t: 目标平台 (linux-x64, darwin-x64, win-x64)
-          # -o: 输出文件名
-          boxednode \
-            -s src/index.js \
-            -t ${{ matrix.target_os }}-x64 \
-            -o ${APP_NAME}-${{ matrix.target_os }}-x64${{ matrix.output_ext }}
-
-      # 4. 压缩体积 (可选)
-      - name: Compress with UPX
-        shell: bash
-        run: |
-          APP_NAME=$(node -p "require('./package.json').name")
-          FILE_NAME="${APP_NAME}-${{ matrix.target_os }}-x64${{ matrix.output_ext }}"
-          
-          if [ -f "$FILE_NAME" ]; then
-            upx --best --lzma "$FILE_NAME" || echo "UPX compression failed or skipped"
-          else
-            echo "Executable not found, skipping compression"
+          # 确保 src/index.js 存在，如果不存在请检查你的项目结构
+          if [ ! -f "src/index.js" ]; then
+            echo "Error: src/index.js not found!"
+            exit 1
           fi
+          
+          # 构建命令
+          # --output 指定输出文件名
+          # --name 指定内部产品名称
+          boxednode --source src/index.js --output ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }} --name "${{ env.PROJECT_NAME }}"
+
+      # 4. 压缩文件 (可选，使用 UPX)
+      - name: Compress with UPX
+        uses: crazy-max/ghaction-upx@v3
+        with:
+          version: latest
+          files: |
+            ./${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }}
+          args: --best --lzma
 
       # 5. 上传构建产物
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.target_os }}-x64
-          path: "*-${{ matrix.target_os }}-x64*"
-          retention-days: 5
+          name: binary-${{ matrix.target_os }}
+          path: ${{ env.PROJECT_NAME }}-${{ matrix.target_os }}${{ matrix.output_ext }}
 
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') # 仅在打标签时发布
     
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
-            **/*-linux-x64*
-            **/*-macos-x64*
-            **/*-win-x64*
-          generate_release_notes: true
+            binary-linux/*
+            binary-win/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
