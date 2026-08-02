@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "Non-existent Minecraft Launcher",
+    "version": "1.0.0",
+    "window": {
+      "width": 800,
+      "height": 600,
+      "maximized": false
+    }
+  },
+  "minecraft": {
+    "game_directory": ".minecraft",
+    "version": "1.20.1",
+    "jvm_arguments": "-Xmx4G -Xms2G"
+  },
+  "java": {
+    "path": ""
+  },
+  "logging": {
+    "level": "INFO"
+  }
+}

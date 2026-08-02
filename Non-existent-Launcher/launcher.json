@@ -1,0 +1,5 @@
+{
+  "engine_version": "1.0.0",
+  "default_jvm_args": ["-Xmx2G"],
+  "debug_mode": false
+}

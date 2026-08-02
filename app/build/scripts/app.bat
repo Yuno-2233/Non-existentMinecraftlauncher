@@ -68,7 +68,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\app-0.1.0.jar;%APP_HOME%\lib\lanterna-3.1.1.jar
+set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\jline-3.25.1.jar;%APP_HOME%\lib\jansi-2.4.1.jar
 
 
 @rem Execute app
