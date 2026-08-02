@@ -65,6 +65,8 @@ Fork 本仓库。
 
 打开一个 Pull Request 等待审查。
 
+开发文档
+https://www.kdocs.cn/l/crxyry5cQqFJ
 
 开源许可
 
