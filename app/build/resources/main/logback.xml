@@ -1,30 +1,25 @@
+<!-- src/main/resources/logback.xml -->
 <configuration>
-    <!-- 定义日志输出目录为当前目录下的 log 文件夹 -->
-    <property name="LOG_HOME" value="./log" />
+    <!-- 定义日志文件的路径 -->
+    <property name="LOG_FILE" value="./logs/launcher.log" />
 
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>[%d{HH:mm:ss}] [%-5level] [%logger{36}] %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- 文件输出，按天滚动 -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/launcher.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 历史日志文件命名格式 -->
-            <fileNamePattern>${LOG_HOME}/launcher.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 保留30天的日志 -->
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
+    <!-- 文件输出 -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_FILE}</file>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>[%d{HH:mm:ss}] [%-5level] [%logger{36}] %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- 设置根日志级别，并同时输出到控制台和文件 -->
-    <root level="INFO">
+    <!-- 设置根日志级别，并指定使用哪些输出器 -->
+    <root level="debug">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>

@@ -68,7 +68,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\jline-3.25.1.jar;%APP_HOME%\lib\jansi-2.4.1.jar
+set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\jline-3.25.1.jar;%APP_HOME%\lib\jansi-2.4.1.jar;%APP_HOME%\lib\logback-classic-1.4.14.jar;%APP_HOME%\lib\logback-core-1.4.14.jar;%APP_HOME%\lib\slf4j-api-2.0.7.jar
 
 
 @rem Execute app

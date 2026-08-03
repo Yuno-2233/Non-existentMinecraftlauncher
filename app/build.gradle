@@ -12,6 +12,7 @@ repositories {
 dependencies {
     implementation 'org.jline:jline:3.25.1'
     implementation 'org.fusesource.jansi:jansi:2.4.1'
+    implementation 'ch.qos.logback:logback-classic:1.4.14'
 }
 
 java {
