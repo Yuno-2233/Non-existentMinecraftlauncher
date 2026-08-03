@@ -39,7 +39,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
-      # 统一版本号变量：标签触发用 ref_name，手动触发用输入值
       - name: Resolve version name
         id: version
         run: |
@@ -52,9 +51,52 @@ jobs:
       - name: Prepare release package
         run: |
           mkdir -p build/release
-          cp app/build/libs/app.jar build/release/
-          cp start.bat start.sh build/release/
+
+          # 智能查找构建产物（排除 sources 和 javadoc）
+          JAR_FILE=$(find app/build/libs -name "*.jar" -not -name "*-sources.jar" -not -name "*-javadoc.jar" | head -n 1)
+
+          if [ -z "$JAR_FILE" ]; then
+            echo "❌ 错误：未在 app/build/libs 中找到有效的 JAR 文件！"
+            exit 1
+          fi
+
+          JAR_NAME=$(basename "$JAR_FILE")
+          echo "✅ 检测到构建产物: $JAR_NAME"
+
+          # 复制 JAR 包（保持原始命名规范）
+          cp "$JAR_FILE" build/release/
+
+          # 动态生成 Windows 启动脚本
+          cat > build/release/start.bat <<EOF
+@echo off
+title Non-existent Minecraft Launcher
+echo Starting $JAR_NAME ...
+java -Xms512m -Xmx2G -jar "$JAR_NAME" %*
+pause
+EOF
+
+          # 动态生成 Linux/Mac 启动脚本
+          cat > build/release/start.sh <<'OUTER_EOF'
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+JAR_FILE=$(find "$DIR" -maxdepth 1 -name "*.jar" | head -n 1)
+
+if [ -z "$JAR_FILE" ]; then
+    echo "Error: No JAR file found in the current directory."
+    exit 1
+fi
+
+echo "Starting $(basename "$JAR_FILE") ..."
+java -Xms512m -Xmx2G -jar "$JAR_FILE" "$@"
+OUTER_EOF
+
           chmod +x build/release/start.sh
+
+          echo "📦 发布包内容预览："
+          ls -lh build/release/
+
+      - name: Package release zip
+        run: |
           cd build/release
           zip -r ../Non-existentMinecraftLauncher-${{ steps.version.outputs.name }}.zip .
 
