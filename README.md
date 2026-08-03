@@ -12,6 +12,8 @@
 ##开发指南
 #mod开发
 参见 https://www.kdocs.cn/l/cqNLAborp3ja
+     https://www.kdocs.cn/l/cpVywCKn5Dqv
+     https://www.kdocs.cn/l/crxyry5cQqFJ
 
 ##开源协议
 本项目遵循 GNU General Public License v3.0 开源协议。
