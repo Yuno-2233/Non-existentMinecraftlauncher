@@ -20,7 +20,7 @@
 我们欢迎开发者为本项目贡献插件或进行二次开发。以下是相关的协议与规范文档：
 
 *   **Mod 协议与配置规范**: [点击查看](https://www.kdocs.cn/l/cqNLAborp3ja)
-*   **插件开发协定与国际化指南**: [点击查看](https://www.kdocs.cn/l/crxyry5cQqFJ)
+*   **插件开发协定**: [点击查看](https://www.kdocs.cn/l/cbd0afIn3XJs)
 *   **项目元信息与说明**: [点击查看](https://www.kdocs.cn/l/cpVywCKn5Dqv)
 
 ---
