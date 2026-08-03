@@ -3,11 +3,11 @@
 
 ##如何使用
 #下载
-在 https://github.com/Yuno-2233/Non-existentMinecraftlauncher/releases 下载最新版本的jar文件
+在 https://github.com/Yuno-2233/Non-existentMinecraftlauncher/releases 下载最新版本的jar文件和批处理脚本
 
 #运行
 确保您的电脑已经安装了java
-解压zip文件打开，双击批处理文件即可
+解压zip文件并打开，确保批处理文件与jar文件在同一目录下，双击批处理脚本
 
 ##开发指南
 #mod开发
