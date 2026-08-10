@@ -1,0 +1,10 @@
+{
+  "id": "core",
+  "version": "1.0.0",
+  "mainClass": "io.github.yuno2233.neml.core.CoreMainInit",
+  "depends": {},
+  "entrypoints": {
+    "main": ["io.github.yuno2233.neml.core.CoreMainInit"],
+    "command": ["io.github.yuno2233.neml.core.CoreCommandDispatcher"]
+  }
+}

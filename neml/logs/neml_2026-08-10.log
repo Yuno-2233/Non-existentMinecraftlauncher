@@ -1,0 +1,14 @@
+2026-08-10T03:36:47.794811737Z SEVERE: [NEML] 执行失败: 未找到 mod: list
+2026-08-10T03:55:03.628480330Z WARNING: [NEML] 未发现任何 mod
+2026-08-10T03:55:03.655265121Z SEVERE: [NEML] 执行失败: 未找到 mod: core
+2026-08-10T03:55:05.890670173Z WARNING: [NEML] 未发现任何 mod
+2026-08-10T03:55:05.906939860Z SEVERE: [NEML] 执行失败: 未找到 mod: core
+2026-08-10T04:03:28.385783731Z INFO: [NEML] 发现内置 mod: core
+2026-08-10T04:03:28.407495970Z INFO: [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10T04:09:08.562293028Z INFO: [NEML] 发现内置 mod: core
+2026-08-10T04:09:08.584365424Z INFO: [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10T04:09:08.991719538Z INFO: [NEML] 发现内置 mod: core
+2026-08-10T04:09:09.014381101Z INFO: [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10T04:09:09.018131413Z INFO: [NEML] 发现内置 mod: core
+2026-08-10T04:09:12.825604329Z INFO: [NEML] 发现内置 mod: core
+2026-08-10T04:09:12.848021568Z INFO: [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
