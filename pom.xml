@@ -12,7 +12,14 @@
 
     <name>Non-existentMinecraftLauncher Engine</name>
     <description>A lightweight mod loading engine for CLI-based Minecraft launchers</description>
-
+    
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+        </license>
+    </licenses>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
