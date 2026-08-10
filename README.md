@@ -1,4 +1,4 @@
----
+
 
 ## 标题
 `Non-existentMinecraftLauncher (NEML) Engine`
@@ -25,17 +25,17 @@ java -jar neml.jar <modid> [参数...]
 ## 快速开始
 1. 环境要求：Java 11 或更高版本，Maven（仅从源码构建时需要）
 2. 获取引擎 Jar：
-   - 从 GitHub Releases 下载已构建的 `neml.jar`
-   - 或自行构建：`mvn clean package`，产物位于 `target/neml.jar`
+- 从 GitHub Releases 下载已构建的 `neml.jar`
+- 或自行构建：`mvn clean package`，产物位于 `target/neml.jar`
 3. 运行：
-   ```
-   java -jar neml.jar core list
-   ```
-   查看已发现的 Mod 列表
+```
+java -jar neml.jar core list
+```
+查看已发现的 Mod 列表
 4. 探索更多命令：
-   ```
-   java -jar neml.jar core help
-   ```
+```
+java -jar neml.jar core help
+```
 
 ## 内置 Mod
 引擎预置一个名为 `core` 的内置 Mod，提供基础管理命令：
@@ -83,8 +83,8 @@ java -jar neml.jar core help
 - 提供更灵活的命令注册与帮助生成机制
 
 ## 法律信息
+
 ### 开源协议
 本项目采用 GNU General Public License v3.0 (GPL v3) 进行许可。
 详见[GPL v3官方文档](https://www.gnu.org/licenses/gpl-3.0.txt)
 
----
