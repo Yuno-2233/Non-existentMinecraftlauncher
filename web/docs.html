@@ -18,10 +18,53 @@
         </div>
     </nav>
     <div class="container">
-        <!-- 文档内容保持不变 -->
+        <h1>文档</h1>
+        <p>欢迎阅读 NEML 使用文档。NEML 是模块化命令行 Minecraft 启动器引擎，通过 <code>neml.jar</code> 与子命令交互。所有功能均由 Mod 提供。</p>
+        <h2>内置 Mod 命令</h2>
+        <h3>core</h3>
+        <pre>neml core list     列出已发现的 Mod
+neml core reload   重新扫描 Mod 目录
+neml core help [modid]  显示帮助（可过滤 mod）</pre>
+        <h3>versions</h3>
+        <pre>neml versions list                     列出当前 .minecraft 中的版本
+neml versions dir add &lt;路径&gt;            添加 .minecraft 目录
+neml versions dir list                 列出已添加目录
+neml versions dir switch &lt;索引&gt;        切换工作目录
+neml versions isolate &lt;版本&gt; [on|off]  管理版本隔离（默认开启）
+neml versions config &lt;版本&gt; [set key value]  查看/设置版本配置</pre>
+        <h3>account</h3>
+        <pre>neml account list             列出所有账号
+neml account add &lt;用户名&gt;     添加离线账号
+neml account switch &lt;索引/用户名&gt;  切换账号
+neml account login             登录微软账号（设备代码）
+neml account logout            注销微软账号
+neml account status            查看当前登录状态
+neml account login3rd &lt;服务器&gt; &lt;用户名&gt; &lt;密码&gt;  添加第三方验证账号</pre>
+        <h3>installer</h3>
+        <pre>neml installer install &lt;版本&gt; [自定义名称]  安装 Minecraft 版本（自动下载 JSON、jar、库、资源）</pre>
+        <h3>java</h3>
+        <pre>neml java list              列出已添加的 Java 路径及版本
+neml java dir add &lt;路径&gt;     添加 Java 目录
+neml java dir list           列出已添加的目录
+neml java dir switch &lt;索引&gt;  切换当前 Java
+neml java info               显示当前 Java 详细信息</pre>
+        <h3>launcher</h3>
+        <pre>neml launcher set-default &lt;版本&gt;  设置默认启动版本
+neml launcher launch [版本]       启动游戏（默认启动已设置的版本）</pre>
+
+        <h2>配置与数据目录</h2>
+        <p>所有配置文件存放在工作目录下的 <code>neml/</code> 文件夹中：</p>
+        <pre>neml/
+  config/
+    versions/config.json   .minecraft 目录管理
+    account/config.json    账号信息
+    java/config.json       Java 运行时管理
+    launcher/config.json   默认启动版本
+  mod/                     外部 Mod（.jar）
+  logs/                    运行日志</pre>
     </div>
     <footer>
-        <p>NEML 2025-2026 | MIT License | <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a></p>
+        <p>NEML 2025-2026 | <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a></p>
     </footer>
 </body>
 </html>
