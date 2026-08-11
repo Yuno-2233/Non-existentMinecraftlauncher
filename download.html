@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载 - NEML</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>N</text></svg>">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid #30363d;
+            background: rgba(13,17,23,0.9);
+            position: sticky;
+            top: 0;
+        }
+        nav .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #58a6ff, #bc8cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        nav a {
+            color: #c9d1d9;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+        nav a:hover { color: #58a6ff; }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #238636, #2ea043);
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .button:hover { opacity: 0.9; }
+        pre {
+            background: #161b22;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid #30363d;
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-top: 60px;
+        }
+        a { color: #58a6ff; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="logo-text">NEML</span>
+        <div>
+            <a href="index.html">首页</a>
+            <a href="docs.html">文档</a>
+            <a href="download.html">下载</a>
+            <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>下载 NEML</h1>
+        <p>最新版本可从 GitHub Releases 获取，或通过 Actions 下载开发构建。</p>
+        <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher/releases/latest" class="button">下载最新 Release (neml.jar)</a>
+        <h2 style="margin-top:40px">命令行下载</h2>
+        <pre>wget https://github.com/Yuno-2233/Non-existentMinecraftlauncher/releases/latest/download/neml.jar</pre>
+        <p>或者使用 curl：</p>
+        <pre>curl -L -o neml.jar https://github.com/Yuno-2233/Non-existentMinecraftlauncher/releases/latest/download/neml.jar</pre>
+        <h2>系统要求</h2>
+        <p>需要 Java 11 或更高版本。推荐使用 OpenJDK 17+。</p>
+        <p>启动器本身可在任何操作系统上运行，但 Minecraft 游戏可能需要特定平台的原生库（x86_64 架构）。</p>
+    </div>
+    <footer>
+        <p>NEML 2025-2026 | <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a></p>
+    </footer>
+</body>
+</html>
