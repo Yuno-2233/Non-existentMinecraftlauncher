@@ -6,5 +6,10 @@
   "entrypoints": {
     "main": ["io.github.yuno2233.neml.core.CoreMainInit"],
     "command": ["io.github.yuno2233.neml.core.CoreCommandDispatcher"]
+  },
+  "commands": {
+    "list": "列出已发现的 mod",
+    "reload": "重新扫描 mod 目录",
+    "help": "显示此帮助"
   }
 }

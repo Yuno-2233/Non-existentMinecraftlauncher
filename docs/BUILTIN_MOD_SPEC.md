@@ -55,13 +55,14 @@ src/main/builtin-mods/
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `id` | string | ✅ | Mod 唯一标识，建议使用小写字母和连字符，例如 `minecraft-installer` |
-| `version` | string | ✅ | 语义化版本号，如 `1.0.0`，用于依赖匹配 |
-| `mainClass` | string | ❌ | 保留字段，可不填；如果填写也不会被使用 |
-| `depends` | object | ❌ | 键为依赖的 mod id，值为版本范围表达式（见下） |
-| `entrypoints` | object | ✅ | 必须包含 `main` 和/或 `command` 数组 |
-| `entrypoints.main` | string[] | ❌ | 实现 `ModInitializer` 接口的类全限定名列表，在加载时按依赖顺序执行 |
-| `entrypoints.command` | string[] | ❌ | 实现 `CommandProvider` 接口的类全限定名列表，当用户执行 `neml <modid>` 时依次调用 |
+| `id` | string | true | Mod 唯一标识，建议使用小写字母和连字符，例如 `minecraft-installer` |
+| `version` | string | true | 语义化版本号，如 `1.0.0`，用于依赖匹配 |
+| `mainClass` | string | false | 保留字段，可不填；如果填写也不会被使用 |
+| `depends` | object | false | 键为依赖的 mod id，值为版本范围表达式（见下） |
+| `entrypoints` | object | true | 必须包含 `main` 和/或 `command` 数组 |
+| `commands` | object | true | 对外命令的描述，键为命令名，值为描述文本 |
+| `entrypoints.main` | string[] | false | 实现 `ModInitializer` 接口的类全限定名列表，在加载时按依赖顺序执行 |
+| `entrypoints.command` | string[] | false | 实现 `CommandProvider` 接口的类全限定名列表，当用户执行 `neml <modid>` 时依次调用 |
 
 **版本范围表达式**：  
 用空格分隔多个条件，支持：

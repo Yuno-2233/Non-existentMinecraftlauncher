@@ -8,58 +8,62 @@ public class ClassLoaderBuilder {
 
     public static Map<String, ClassLoader> build(List<ModCandidate> mods) throws Exception {
         Map<String, ClassLoader> loaders = new LinkedHashMap<>();
+
+        // mods 已经是拓扑排序，依赖的 mod 一定先出现
         for (ModCandidate mod : mods) {
+            // 收集直接依赖的 ClassLoader
+            List<ClassLoader> parentLoaders = new ArrayList<>();
+            for (String depId : mod.getMetadata().getDepends().keySet()) {
+                ClassLoader depLoader = loaders.get(depId);
+                if (depLoader != null) {
+                    parentLoaders.add(depLoader);
+                }
+            }
+
+            ClassLoader parent;
+            if (parentLoaders.isEmpty()) {
+                parent = ClassLoader.getSystemClassLoader();
+            } else if (parentLoaders.size() == 1) {
+                parent = parentLoaders.get(0);
+            } else {
+                parent = new CombinedClassLoader(parentLoaders);
+            }
+
             ClassLoader loader;
             if (mod.getJarPath() == null) {
-                // 内置 mod，类由主 classpath 加载
+                // 内置 mod，使用系统类加载器（其类已在主 jar 中）
                 loader = ClassLoader.getSystemClassLoader();
             } else {
-                URL[] urls = { mod.getJarPath().toUri().toURL() };
-                loader = new ModClassLoader(urls, null);
+                loader = new ModClassLoader(
+                        new URL[]{mod.getJarPath().toUri().toURL()},
+                        parent
+                );
             }
             loaders.put(mod.getId(), loader);
-        }
-
-        // 设置父子关系（仅外部 mod 需要调整 parent）
-        for (ModCandidate mod : mods) {
-            ClassLoader current = loaders.get(mod.getId());
-            if (current instanceof ModClassLoader) {
-                ModClassLoader mcl = (ModClassLoader) current;
-                List<ClassLoader> parents = new ArrayList<>();
-                for (String depId : mod.getMetadata().getDepends().keySet()) {
-                    ClassLoader depLoader = loaders.get(depId);
-                    if (depLoader != null) parents.add(depLoader);
-                }
-                if (parents.isEmpty()) {
-                    mcl.setParent(ClassLoader.getSystemClassLoader());
-                } else if (parents.size() == 1) {
-                    mcl.setParent(parents.get(0));
-                } else {
-                    mcl.setParent(new CombinedClassLoader(parents));
-                }
-            }
         }
         return loaders;
     }
 
     private static class ModClassLoader extends URLClassLoader {
-        ModClassLoader(URL[] urls, ClassLoader parent) { super(urls, parent); }
-        void setParent(ClassLoader parent) {
-            try {
-                java.lang.reflect.Field field = ClassLoader.class.getDeclaredField("parent");
-                field.setAccessible(true);
-                field.set(this, parent);
-            } catch (Exception e) { throw new RuntimeException(e); }
+        ModClassLoader(URL[] urls, ClassLoader parent) {
+            super(urls, parent);
         }
     }
 
     private static class CombinedClassLoader extends ClassLoader {
-        List<ClassLoader> parents;
-        CombinedClassLoader(List<ClassLoader> parents) { super(null); this.parents = parents; }
+        private final List<ClassLoader> parents;
+
+        CombinedClassLoader(List<ClassLoader> parents) {
+            super(null);
+            this.parents = parents;
+        }
+
         @Override
         protected Class<?> findClass(String name) throws ClassNotFoundException {
             for (ClassLoader cl : parents) {
-                try { return cl.loadClass(name); } catch (ClassNotFoundException ignored) {}
+                try {
+                    return cl.loadClass(name);
+                } catch (ClassNotFoundException ignored) {}
             }
             throw new ClassNotFoundException(name);
         }

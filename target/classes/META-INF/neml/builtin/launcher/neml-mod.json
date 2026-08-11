@@ -1,0 +1,19 @@
+{
+  "id": "account",
+  "version": "1.0.0",
+  "mainClass": "io.github.yuno2233.neml.account.AccountMain",
+  "depends": {},
+  "entrypoints": {
+    "main": ["io.github.yuno2233.neml.account.AccountMain"],
+    "command": ["io.github.yuno2233.neml.account.AccountCommandDispatcher"]
+  },
+  "commands": {
+    "list": "列出所有账号（离线/正版/第三方）",
+    "add <用户名>": "添加一个离线账号",
+    "switch <索引/用户名>": "切换到指定账号",
+    "login": "登录微软账号（设备代码流程）",
+    "logout": "注销当前微软账号",
+    "status": "查看当前登录状态",
+    "login3rd <服务器URL> <用户名> <密码>": "添加第三方验证账号"
+  }
+}

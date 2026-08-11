@@ -1,0 +1,18 @@
+{
+  "id": "versions",
+  "version": "1.0.0",
+  "mainClass": "io.github.yuno2233.neml.versions.VersionsMain",
+  "depends": {},
+  "entrypoints": {
+    "main": ["io.github.yuno2233.neml.versions.VersionsMain"],
+    "command": ["io.github.yuno2233.neml.versions.VersionsCommandDispatcher"]
+  },
+  "commands": {
+    "list": "列出当前 .minecraft 中已安装的版本",
+    "dir add <路径>": "添加一个 .minecraft 目录",
+    "dir list": "列出所有已添加的目录",
+    "dir switch <索引>": "切换到指定目录",
+    "isolate <版本ID> [on|off]": "查看或设置版本隔离",
+    "config <版本ID> [set <key> <value>]": "查看或设置版本单独配置"
+  }
+}

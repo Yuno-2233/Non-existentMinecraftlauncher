@@ -1,0 +1,13 @@
+{
+  "id": "installer",
+  "version": "1.0.0",
+  "mainClass": "io.github.yuno2233.neml.installer.InstallerMain",
+  "depends": {},
+  "entrypoints": {
+    "main": ["io.github.yuno2233.neml.installer.InstallerMain"],
+    "command": ["io.github.yuno2233.neml.installer.InstallerCommandDispatcher"]
+  },
+  "commands": {
+    "install <版本ID>": "安装指定 Minecraft 版本（下载所有文件）"
+  }
+}

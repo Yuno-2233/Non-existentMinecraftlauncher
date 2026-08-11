@@ -8,6 +8,14 @@ public class ModMetadata {
     private String mainClass;
     private Map<String, String> depends = new HashMap<>();
     private Map<String, List<String>> entrypoints = new HashMap<>();
+    private Map<String, String> commands;
+
+    public Map<String, String> getCommands() {
+        return commands != null ? commands : Collections.emptyMap();
+    }
+    public void setCommands(Map<String, String> commands) {
+        this.commands = commands;
+    }
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

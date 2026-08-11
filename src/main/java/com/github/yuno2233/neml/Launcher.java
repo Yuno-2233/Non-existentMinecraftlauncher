@@ -27,12 +27,13 @@ public class Launcher {
     private static final Logger log = NemlLogger.getEngineLogger();
 
     public static void main(String[] args) {
-        String logLevel = System.getenv("NEML_LOG_LEVEL");
-        Level level = Level.INFO;
-        if (logLevel != null) {
-            try { level = Level.parse(logLevel.toUpperCase()); } catch (IllegalArgumentException ignored) {}
+        // 初始化日志（从环境变量 NEML_LOG_LEVEL 读取级别）
+        NemlLogger.init();
+
+        if (args.length < 1) {
+            System.out.println("用法: neml <modid> [参数...]");
+            System.exit(1);
         }
-        NemlLogger.init(level);
 
         if (args.length < 1) {
             System.out.println("用法: neml <modid> [参数...]");

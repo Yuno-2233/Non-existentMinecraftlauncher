@@ -12,3 +12,419 @@
 2026-08-10T04:09:09.018131413Z INFO: [NEML] 发现内置 mod: core
 2026-08-10T04:09:12.825604329Z INFO: [NEML] 发现内置 mod: core
 2026-08-10T04:09:12.848021568Z INFO: [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 08:40:32 INFO [NEML] 发现内置 mod: core
+2026-08-10 08:40:32 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 08:47:12 INFO [NEML] 发现内置 mod: core
+2026-08-10 08:47:12 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 08:47:29 INFO [NEML] 发现内置 mod: core
+2026-08-10 08:47:29 SEVERE [NEML] 执行失败: java.lang.NoSuchFieldException: parent
+java.lang.RuntimeException: java.lang.NoSuchFieldException: parent
+	at com.github.yuno2233.neml.mod.ClassLoaderBuilder$ModClassLoader.setParent(ClassLoaderBuilder.java:52)
+	at com.github.yuno2233.neml.mod.ClassLoaderBuilder.build(ClassLoaderBuilder.java:34)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:138)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+Caused by: java.lang.NoSuchFieldException: parent
+	at java.base/java.lang.Class.getDeclaredField(Class.java:2784)
+	at com.github.yuno2233.neml.mod.ClassLoaderBuilder$ModClassLoader.setParent(ClassLoaderBuilder.java:49)
+	... 3 more
+
+2026-08-10 08:50:17 INFO [NEML] 发现内置 mod: core
+2026-08-10 08:50:17 INFO [NEML] 初始化 main 入口: example -> io.github.yuno2233.example.ExampleMain
+2026-08-10 09:06:21 WARNING [NEML] 读取内置 mod 失败: core - com.google.gson.stream.MalformedJsonException: Unterminated object at line 9 column 6 path $..command
+2026-08-10 09:06:21 WARNING [NEML] 无法加载外部 mod: neml/mod/example-mod.jar - com.google.gson.stream.MalformedJsonException: Unterminated object at line 9 column 6 path $..command
+2026-08-10 09:06:21 WARNING [NEML] 未发现任何 mod
+2026-08-10 09:06:21 SEVERE [NEML] 执行失败: 未找到 mod: core
+java.lang.Exception: 未找到 mod: core
+	at com.github.yuno2233.neml.mod.DependencyResolver.resolve(DependencyResolver.java:15)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:135)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+
+2026-08-10 09:07:28 INFO [NEML] 发现内置 mod: core
+2026-08-10 09:07:28 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 09:29:40 INFO [NEML] 发现内置 mod: core
+2026-08-10 09:29:40 INFO [NEML] 发现内置 mod: versions
+2026-08-10 09:29:40 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 09:29:42 INFO [NEML] 发现内置 mod: core
+2026-08-10 09:29:42 INFO [NEML] 发现内置 mod: versions
+2026-08-10 09:29:42 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 09:49:29 INFO [NEML] 发现内置 mod: core
+2026-08-10 09:49:29 INFO [NEML] 发现内置 mod: versions
+2026-08-10 09:49:29 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 09:49:29 INFO [versions] 已创建默认配置文件: /data/data/com.termux/files/home/Non-existentMinecraftlauncher/neml/config/versions/config.json
+2026-08-10 10:00:21 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:00:21 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:00:21 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:00:21 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:00:21 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:00:21 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:00:22 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:00:22 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:00:22 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:00:22 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:00:22 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:00:22 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:00:23 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:00:23 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:00:23 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:00:28 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:00:28 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:00:28 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:01:11 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:01:11 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:01:11 SEVERE [NEML] 执行失败: 未找到 mod: version
+java.lang.Exception: 未找到 mod: version
+	at com.github.yuno2233.neml.mod.DependencyResolver.resolve(DependencyResolver.java:15)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:135)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+
+2026-08-10 10:01:41 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:01:41 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:01:41 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:01:50 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:01:50 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:01:50 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:07:20 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:07:20 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:07:20 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:07:23 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:07:23 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:07:23 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:11:23 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:11:23 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:11:23 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 10:11:38 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:11:38 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:11:38 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:11:53 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:11:53 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:11:53 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:13:08 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:13:08 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:13:08 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:16:40 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:16:40 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:16:40 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:26:41 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:26:41 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:26:41 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:26:41 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
+2026-08-10 10:26:47 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:26:47 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:26:47 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:26:47 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
+2026-08-10 10:33:46 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:33:46 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:33:46 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:33:46 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:33:46 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 10:33:46 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:33:46 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:33:46 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:33:46 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:33:46 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 10:33:50 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:33:50 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:33:50 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:33:50 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:33:50 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 10:34:00 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:34:00 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:34:00 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:34:00 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:34:00 SEVERE [NEML] 执行失败: 未找到 mod: help
+java.lang.Exception: 未找到 mod: help
+	at com.github.yuno2233.neml.mod.DependencyResolver.resolve(DependencyResolver.java:15)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:135)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+
+2026-08-10 10:34:14 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:34:14 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:34:14 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:34:14 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:34:14 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 10:34:55 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:34:55 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:34:55 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:34:55 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:34:55 SEVERE [NEML] 执行失败: 未找到 mod: version
+java.lang.Exception: 未找到 mod: version
+	at com.github.yuno2233.neml.mod.DependencyResolver.resolve(DependencyResolver.java:15)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:135)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+
+2026-08-10 10:35:10 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:35:10 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:35:10 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:35:10 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:35:10 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 10:35:30 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:35:30 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:35:30 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:35:30 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:35:30 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 10:37:33 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:37:33 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:37:33 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:37:33 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:37:33 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 10:37:33 INFO [launcher] 启动命令: /data/data/com.termux/files/usr/lib/jvm/java-21-openjdk/bin/java -Xmx2G -Djava.library.path=${natives_directory} -Djna.tmpdir=${natives_directory} -Dorg.lwjgl.system.SharedLibraryExtractPath=${natives_directory} -Dio.netty.native.workdir=${natives_directory} -Dminecraft.launcher.brand=${launcher_name} -Dminecraft.launcher.version=${launcher_version} -cp ${classpath} -Djava.net.preferIPv6Addresses=system -DignoreList=client-extra,${version_name}.jar -DlibraryDirectory=${library_directory} -p ${library_directory}/net/neoforged/fancymodloader/bootstraplauncher/9.0.18/bootstraplauncher-9.0.18.jar${classpath_separator}${library_directory}/net/neoforged/fancymodloader/securejarhandler/9.0.18/securejarhandler-9.0.18.jar${classpath_separator}${library_directory}/net/neoforged/JarJarFileSystems/0.4.1/JarJarFileSystems-0.4.1.jar --add-modules ALL-MODULE-PATH --add-opens java.base/java.util.jar=cpw.mods.securejarhandler --add-opens java.base/java.lang.invoke=cpw.mods.securejarhandler --add-exports java.base/sun.security.util=cpw.mods.securejarhandler --add-exports jdk.naming.dns/com.sun.jndi.dns=java.naming -cp /storage/emulated/0/zl2/.minecraft/versions/1.21.8-NeoForge_21.8.54/1.21.8-NeoForge_21.8.54.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/fasterxml/jackson/core/jackson-annotations/2.13.4/jackson-annotations-2.13.4.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/fasterxml/jackson/core/jackson-core/2.13.4/jackson-core-2.13.4.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/fasterxml/jackson/core/jackson-databind/2.13.4.2/jackson-databind-2.13.4.2.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/github/oshi/oshi-core/6.6.5/oshi-core-6.6.5.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/github/stephenc/jcip/jcip-annotations/1.0-1/jcip-annotations-1.0-1.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/google/code/gson/gson/2.11.0/gson-2.11.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/google/guava/guava/33.3.1-jre/guava-33.3.1-jre.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/ibm/icu/icu4j/76.1/icu4j-76.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/microsoft/azure/msal4j/1.17.2/msal4j-1.17.2.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/authlib/6.0.58/authlib-6.0.58.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/blocklist/1.0.10/blocklist-1.0.10.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/brigadier/1.3.10/brigadier-1.3.10.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/datafixerupper/8.0.16/datafixerupper-8.0.16.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/jtracy/1.0.29/jtracy-1.0.29.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/jtracy/1.0.29/jtracy-1.0.29.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/logging/1.5.10/logging-1.5.10.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/patchy/2.2.10/patchy-2.2.10.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/mojang/text2speech/1.18.11/text2speech-1.18.11.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/nimbusds/content-type/2.3/content-type-2.3.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/nimbusds/lang-tag/1.7/lang-tag-1.7.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/nimbusds/nimbus-jose-jwt/9.40/nimbus-jose-jwt-9.40.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/nimbusds/oauth2-oidc-sdk/11.18/oauth2-oidc-sdk-11.18.jar:/storage/emulated/0/zl2/.minecraft/libraries/commons-codec/commons-codec/1.17.1/commons-codec-1.17.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/commons-io/commons-io/2.17.0/commons-io-2.17.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/commons-logging/commons-logging/1.3.4/commons-logging-1.3.4.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-buffer/4.1.118.Final/netty-buffer-4.1.118.Final.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-codec/4.1.118.Final/netty-codec-4.1.118.Final.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-common/4.1.118.Final/netty-common-4.1.118.Final.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-handler/4.1.118.Final/netty-handler-4.1.118.Final.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-resolver/4.1.118.Final/netty-resolver-4.1.118.Final.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-transport-classes-epoll/4.1.118.Final/netty-transport-classes-epoll-4.1.118.Final.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-transport-native-epoll/4.1.118.Final/netty-transport-native-epoll-4.1.118.Final-linux-aarch_64.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-transport-native-epoll/4.1.118.Final/netty-transport-native-epoll-4.1.118.Final-linux-x86_64.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-transport-native-unix-common/4.1.118.Final/netty-transport-native-unix-common-4.1.118.Final.jar:/storage/emulated/0/zl2/.minecraft/libraries/io/netty/netty-transport/4.1.118.Final/netty-transport-4.1.118.Final.jar:/storage/emulated/0/zl2/.minecraft/libraries/it/unimi/dsi/fastutil/8.5.15/fastutil-8.5.15.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/java/dev/jna/jna-platform/5.15.0/jna-platform-5.15.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/java/dev/jna/jna/5.15.0/jna-5.15.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/minidev/accessors-smart/2.5.1/accessors-smart-2.5.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/minidev/json-smart/2.5.1/json-smart-2.5.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/apache/commons/commons-compress/1.27.1/commons-compress-1.27.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/apache/commons/commons-lang3/3.17.0/commons-lang3-3.17.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/apache/httpcomponents/httpclient/4.5.14/httpclient-4.5.14.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/apache/httpcomponents/httpcore/4.4.16/httpcore-4.4.16.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/apache/logging/log4j/log4j-api/2.24.1/log4j-api-2.24.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/apache/logging/log4j/log4j-core/2.24.1/log4j-core-2.24.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/apache/logging/log4j/log4j-slf4j2-impl/2.24.1/log4j-slf4j2-impl-2.24.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/jcraft/jorbis/0.0.17/jorbis-0.0.17.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/joml/joml/1.10.8/joml-1.10.8.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/ow2/asm/asm/9.8/asm-9.8.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/fancymodloader/earlydisplay/9.0.18/earlydisplay-9.0.18.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/fancymodloader/loader/9.0.18/loader-9.0.18.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/accesstransformers/11.0.2/accesstransformers-11.0.2.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/ow2/asm/asm-commons/9.8/asm-commons-9.8.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/mergetool/2.0.0/mergetool-2.0.0-api.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/ow2/asm/asm-util/9.8/asm-util-9.8.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/ow2/asm/asm-analysis/9.8/asm-analysis-9.8.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/ow2/asm/asm-tree/9.8/asm-tree-9.8.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/bus/8.0.5/bus-8.0.5.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/electronwill/night-config/toml/3.8.3/toml-3.8.3.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/electronwill/night-config/core/3.8.3/core-3.8.3.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/JarJarSelector/0.4.1/JarJarSelector-0.4.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/JarJarMetadata/0.4.1/JarJarMetadata-0.4.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/apache/maven/maven-artifact/3.9.9/maven-artifact-3.9.9.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/jodah/typetools/0.6.3/typetools-0.6.3.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/minecrell/terminalconsoleappender/1.3.0/terminalconsoleappender-1.3.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/sponge-mixin-0.15.2+mixin.0.8.7.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/fancymodloader/bootstraplauncher/9.0.18/bootstraplauncher-9.0.18.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/fancymodloader/securejarhandler/9.0.18/securejarhandler-9.0.18.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/JarJarFileSystems/0.4.1/JarJarFileSystems-0.4.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/neoforged/accesstransformers/at-parser/11.0.2/at-parser-11.0.2.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/jline/jline-reader/3.20.0/jline-reader-3.20.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/jline/jline-terminal/3.20.0/jline-terminal-3.20.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/net/minecraftforge/srgutils/0.4.15/srgutils-0.4.15.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/checkerframework/checker-qual/3.43.0/checker-qual-3.43.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/google/errorprone/error_prone_annotations/2.28.0/error_prone_annotations-2.28.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/storage/emulated/0/zl2/.minecraft/libraries/org/codehaus/plexus/plexus-utils/3.5.1/plexus-utils-3.5.1.jar:/storage/emulated/0/zl2/.minecraft/libraries/com/machinezoo/noexception/noexception/1.7.1/noexception-1.7.1.jar cpw.mods.bootstraplauncher.BootstrapLauncher --username Steve --version 1.21.8-NeoForge_21.8.54 --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid 5627dd98e6be3c21b8a8e92344183641 --accessToken ${auth_access_token} --clientId ${clientid} --xuid ${auth_xuid} --userType mojang --versionType ${version_type} --demo --width ${resolution_width} --height ${resolution_height} --quickPlayPath ${quickPlayPath} --quickPlaySingleplayer ${quickPlaySingleplayer} --quickPlayMultiplayer ${quickPlayMultiplayer} --quickPlayRealms ${quickPlayRealms} --fml.neoForgeVersion 21.8.54 --fml.fmlVersion 9.0.18 --fml.mcVersion 1.21.8 --fml.neoFormVersion 20250717.133445 --launchTarget neoforgeclient
+2026-08-10 10:47:16 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:47:16 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:47:16 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:47:16 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:47:16 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 10:47:16 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:47:16 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:47:16 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:47:16 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:47:16 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 10:47:54 INFO [NEML] 发现内置 mod: core
+2026-08-10 10:47:54 INFO [NEML] 发现内置 mod: versions
+2026-08-10 10:47:54 INFO [NEML] 发现内置 mod: account
+2026-08-10 10:47:54 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 10:47:54 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 11:00:32 INFO [NEML] 发现内置 mod: core
+2026-08-10 11:00:32 INFO [NEML] 发现内置 mod: versions
+2026-08-10 11:00:32 INFO [NEML] 发现内置 mod: account
+2026-08-10 11:00:32 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 11:00:32 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 11:24:26 INFO [NEML] 发现内置 mod: core
+2026-08-10 11:24:26 INFO [NEML] 发现内置 mod: versions
+2026-08-10 11:24:26 INFO [NEML] 发现内置 mod: account
+2026-08-10 11:24:26 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 11:24:26 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 11:59:40 INFO [NEML] 发现内置 mod: core
+2026-08-10 11:59:40 INFO [NEML] 发现内置 mod: versions
+2026-08-10 11:59:40 INFO [NEML] 发现内置 mod: account
+2026-08-10 11:59:40 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 11:59:40 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 12:06:53 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:06:53 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:06:53 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:06:53 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:06:53 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:06:53 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-10 12:10:13 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:10:13 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:10:13 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:10:13 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:10:13 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:10:13 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-10 12:11:40 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:11:40 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:11:40 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:11:40 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:11:40 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:11:40 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-10 12:14:35 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:14:35 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:14:35 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:14:35 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:14:35 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:14:35 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-10 12:15:54 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:15:54 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:15:54 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:15:54 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:15:54 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:15:54 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 12:16:06 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:16:06 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:16:06 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:16:06 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:16:06 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:16:06 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 12:16:29 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:16:29 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:16:29 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:16:29 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:16:29 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:16:29 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 12:16:57 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:16:57 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:16:57 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:16:57 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:16:57 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:16:57 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 12:42:37 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:42:37 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:42:37 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:42:37 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:42:37 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:42:37 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-10 12:42:54 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:42:54 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:42:54 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:42:54 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:42:54 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:42:54 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 12:48:47 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:48:47 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:48:47 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:48:47 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:48:47 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:48:47 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-10 12:48:56 INFO [NEML] 发现内置 mod: core
+2026-08-10 12:48:56 INFO [NEML] 发现内置 mod: versions
+2026-08-10 12:48:56 INFO [NEML] 发现内置 mod: account
+2026-08-10 12:48:56 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 12:48:56 INFO [NEML] 发现内置 mod: installer
+2026-08-10 12:48:56 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 13:05:03 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:05:03 INFO [NEML] 发现内置 mod: versions
+2026-08-10 13:05:03 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:05:03 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:05:03 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:05:03 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-10 13:10:14 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:10:14 INFO [NEML] 发现内置 mod: versions
+2026-08-10 13:10:14 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:10:14 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:10:14 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:10:14 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 13:10:47 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:10:47 INFO [NEML] 发现内置 mod: versions
+2026-08-10 13:10:47 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:10:47 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:10:47 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:10:47 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-10 13:36:54 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:36:54 WARNING [NEML] 读取内置 mod 失败: versions - com.google.gson.stream.MalformedJsonException: Unterminated object at line 15 column 6 path $..dir switch <索引>
+2026-08-10 13:36:54 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:36:54 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:36:54 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:36:55 SEVERE [NEML] 执行失败: 未找到 mod: versions
+java.lang.Exception: 未找到 mod: versions
+	at com.github.yuno2233.neml.mod.DependencyResolver.resolve(DependencyResolver.java:15)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:135)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+
+2026-08-10 13:36:55 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:36:55 WARNING [NEML] 读取内置 mod 失败: versions - com.google.gson.stream.MalformedJsonException: Unterminated object at line 15 column 6 path $..dir switch <索引>
+2026-08-10 13:36:55 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:36:55 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:36:55 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:36:55 SEVERE [NEML] 执行失败: 未找到 mod: versions
+java.lang.Exception: 未找到 mod: versions
+	at com.github.yuno2233.neml.mod.DependencyResolver.resolve(DependencyResolver.java:15)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:135)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+
+2026-08-10 13:36:55 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:36:55 WARNING [NEML] 读取内置 mod 失败: versions - com.google.gson.stream.MalformedJsonException: Unterminated object at line 15 column 6 path $..dir switch <索引>
+2026-08-10 13:36:55 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:36:55 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:36:55 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:36:55 SEVERE [NEML] 执行失败: 未找到 mod: versions
+java.lang.Exception: 未找到 mod: versions
+	at com.github.yuno2233.neml.mod.DependencyResolver.resolve(DependencyResolver.java:15)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:135)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+
+2026-08-10 13:36:56 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:36:56 WARNING [NEML] 读取内置 mod 失败: versions - com.google.gson.stream.MalformedJsonException: Unterminated object at line 15 column 6 path $..dir switch <索引>
+2026-08-10 13:36:56 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:36:56 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:36:56 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:36:56 SEVERE [NEML] 执行失败: 未找到 mod: versions
+java.lang.Exception: 未找到 mod: versions
+	at com.github.yuno2233.neml.mod.DependencyResolver.resolve(DependencyResolver.java:15)
+	at com.github.yuno2233.neml.mod.ModLoader.loadMods(ModLoader.java:135)
+	at com.github.yuno2233.neml.Launcher.main(Launcher.java:50)
+
+2026-08-10 13:38:39 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:38:39 INFO [NEML] 发现内置 mod: versions
+2026-08-10 13:38:39 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:38:39 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:38:39 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:38:39 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 13:38:48 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:38:48 INFO [NEML] 发现内置 mod: versions
+2026-08-10 13:38:48 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:38:48 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:38:48 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:38:48 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-10 13:39:21 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:39:21 INFO [NEML] 发现内置 mod: versions
+2026-08-10 13:39:21 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:39:21 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:39:21 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:39:21 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 13:39:28 INFO [NEML] 发现内置 mod: core
+2026-08-10 13:39:28 INFO [NEML] 发现内置 mod: versions
+2026-08-10 13:39:28 INFO [NEML] 发现内置 mod: account
+2026-08-10 13:39:28 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 13:39:28 INFO [NEML] 发现内置 mod: installer
+2026-08-10 13:39:28 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 14:02:16 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:02:16 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:02:16 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:02:16 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:02:16 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:02:16 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:02:16 INFO [NEML] 初始化 main 入口: java -> io.github.yuno2233.neml.java.JavaMain
+2026-08-10 14:02:19 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:02:19 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:02:19 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:02:19 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:02:19 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:02:19 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:02:19 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-10 14:16:36 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:16:36 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:16:36 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:16:36 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:16:36 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:16:36 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:16:36 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 14:17:00 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:17:00 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:17:00 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:17:00 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:17:00 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:17:00 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:17:00 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
+2026-08-10 14:17:26 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:17:26 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:17:26 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:17:26 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:17:26 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:17:26 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:17:26 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
+2026-08-10 14:17:41 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:17:41 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:17:41 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:17:41 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:17:41 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:17:41 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:17:41 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
+2026-08-10 14:17:42 SEVERE [account] 登录异常: Server returned HTTP response code: 400 for URL: https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode
+2026-08-10 14:42:49 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:42:49 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:42:49 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:42:49 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:42:49 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:42:49 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:42:49 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
+2026-08-10 14:42:50 SEVERE [account] 登录异常: Cannot invoke "com.google.gson.JsonElement.getAsString()" because the return value of "com.google.gson.JsonObject.get(String)" is null
+2026-08-10 14:50:55 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:50:55 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:50:55 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:50:55 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:50:55 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:50:55 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:50:55 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
+2026-08-10 14:53:11 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:53:11 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:53:11 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:53:11 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:53:11 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:53:11 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:53:11 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
+2026-08-10 14:55:06 INFO [NEML] 发现内置 mod: core
+2026-08-10 14:55:06 INFO [NEML] 发现内置 mod: versions
+2026-08-10 14:55:06 INFO [NEML] 发现内置 mod: account
+2026-08-10 14:55:06 INFO [NEML] 发现内置 mod: launcher
+2026-08-10 14:55:06 INFO [NEML] 发现内置 mod: installer
+2026-08-10 14:55:06 INFO [NEML] 发现内置 mod: java
+2026-08-10 14:55:06 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain

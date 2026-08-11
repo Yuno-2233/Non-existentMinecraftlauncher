@@ -25,8 +25,8 @@ java -jar neml.jar <modid> [参数...]
 ## 快速开始
 1. 环境要求：Java 11 或更高版本，Maven（仅从源码构建时需要）
 2. 获取引擎 Jar：
-- 从 GitHub Releases 下载已构建的 `neml.jar`
-- 或自行构建：`mvn clean package`，产物位于 `target/neml.jar`
+- 自行构建：`mvn clean package`，产物位于 `target/neml.jar`
+- github的发布页面将在测试完成后发布, 注意2.0.1及一下版本为废弃版本。
 3. 运行：
 ```
 java -jar neml.jar core list
@@ -54,12 +54,9 @@ java -jar neml.jar core help
 ```
 
 ## Mod 开发指南
-完整的 Mod 开发规范请查阅 `docs/BUILTIN_MOD_SPEC.md`。关键点概括：
-- 内置 Mod 源码置于 `src/main/builtin-mods/<modid>/` 目录
-- 每个 Mod 目录根必须包含 `neml-mod.json` 描述元数据
-- 入口点分为 `main`（初始化）和 `command`（命令执行），需实现对应的 API 接口
-- 依赖通过 `depends` 字段声明，引擎自动进行版本校验与加载排序
-- 编译时通过 Maven 插件自动将源码和资源集成到最终 Jar 包中
+完整的 Mod 开发规范请查阅
+内置Mod(与启动器一起编译): [BUILTIN_MOD_SPEC文档](https://github.com/Yuno-2233/Non-existentMinecraftlauncher/blob/main/docs/BUILTIN_MOD_SPEC.md)
+外置mod(编译好的jar文件): [EXTERNAL_MOD_SPEC.md](https://github.com/Yuno-2233/Non-existentMinecraftlauncher/blob/main/docs/EXTERNAL_MOD_SPEC.md)
 
 ## 项目结构
 ```

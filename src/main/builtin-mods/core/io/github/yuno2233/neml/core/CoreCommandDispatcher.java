@@ -10,7 +10,7 @@ public class CoreCommandDispatcher implements CommandProvider {
     @Override
     public void execute(String[] args) {
         if (args.length == 0) {
-            printHelp();
+            printHelp(null);
             return;
         }
         switch (args[0]) {
@@ -21,7 +21,8 @@ public class CoreCommandDispatcher implements CommandProvider {
                 reloadMods();
                 break;
             case "help":
-                printHelp();
+                String filter = args.length > 1 ? args[1] : null;
+                printHelp(filter);
                 break;
             default:
                 System.out.println("未知命令: " + args[0] + "，输入 'neml core help' 查看帮助");
@@ -64,10 +65,36 @@ public class CoreCommandDispatcher implements CommandProvider {
         }
     }
 
-    private void printHelp() {
-        System.out.println("NEML 引擎命令:");
-        System.out.println("  neml core list     列出已发现的 mod");
-        System.out.println("  neml core reload   重新扫描 mod 目录");
-        System.out.println("  neml core help     显示此帮助");
+    private void printHelp(String filterModId) {
+        ModLoader loader = ModLoader.getCurrentInstance();
+        if (loader == null) {
+            System.out.println("引擎未初始化");
+            return;
+        }
+        Map<String, ModCandidate> mods = loader.getCandidateMap();
+
+        if (filterModId != null) {
+            ModCandidate target = mods.get(filterModId);
+            if (target == null) {
+                System.out.println("未找到 mod: " + filterModId);
+                return;
+            }
+            System.out.println("Mod: " + filterModId + " 可用命令：");
+            printCommandsForMod(target);
+        } else {
+            System.out.println("可用命令：");
+            for (ModCandidate mod : mods.values()) {
+                printCommandsForMod(mod);
+            }
+        }
+    }
+
+    private void printCommandsForMod(ModCandidate mod) {
+        Map<String, String> commands = mod.getMetadata().getCommands();
+        if (commands.isEmpty()) return;
+        System.out.println(" [" + mod.getId() + "]");
+        for (Map.Entry<String, String> entry : commands.entrySet()) {
+            System.out.printf("   %-25s - %s\n", entry.getKey(), entry.getValue());
+        }
     }
 }

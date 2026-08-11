@@ -1,5 +1,15 @@
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/account/io/github/yuno2233/neml/account/AccountCommandDispatcher.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/account/io/github/yuno2233/neml/account/AccountMain.java
 /data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/core/io/github/yuno2233/neml/core/CoreCommandDispatcher.java
 /data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/core/io/github/yuno2233/neml/core/CoreMainInit.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/installer/io/github/yuno2233/neml/installer/InstallerCommandDispatcher.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/installer/io/github/yuno2233/neml/installer/InstallerMain.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/java/io/github/yuno2233/neml/java/JavaCommandDispatcher.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/java/io/github/yuno2233/neml/java/JavaMain.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/launcher/io/github/yuno2233/neml/launcher/LauncherCommandDispatcher.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/launcher/io/github/yuno2233/neml/launcher/LauncherMain.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/versions/io/github/yuno2233/neml/versions/VersionsCommandDispatcher.java
+/data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/builtin-mods/versions/io/github/yuno2233/neml/versions/VersionsMain.java
 /data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/java/com/github/yuno2233/neml/Launcher.java
 /data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/java/com/github/yuno2233/neml/api/CommandProvider.java
 /data/data/com.termux/files/home/Non-existentMinecraftlauncher/src/main/java/com/github/yuno2233/neml/api/ModInitializer.java

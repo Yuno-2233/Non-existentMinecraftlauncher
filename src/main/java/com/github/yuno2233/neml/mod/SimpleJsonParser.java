@@ -48,6 +48,18 @@ public class SimpleJsonParser {
             }
         }
         meta.setEntrypoints(entrypoints);
+        
+        // 解析 commands 字段 (命令名 -> 描述)
+        Object commandsObj = map.get("commands");
+        if (commandsObj instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> cmdMap = (Map<String, Object>) commandsObj;
+            Map<String, String> commands = new java.util.HashMap<>();
+            for (Map.Entry<String, Object> e : cmdMap.entrySet()) {
+                commands.put(e.getKey(), e.getValue().toString());
+            }
+            meta.setCommands(commands);
+        }
 
         return meta;
     }

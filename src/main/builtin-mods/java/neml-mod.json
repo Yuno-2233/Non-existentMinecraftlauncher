@@ -1,0 +1,17 @@
+{
+  "id": "java",
+  "version": "1.0.0",
+  "mainClass": "io.github.yuno2233.neml.java.JavaMain",
+  "depends": {},
+  "entrypoints": {
+    "main": ["io.github.yuno2233.neml.java.JavaMain"],
+    "command": ["io.github.yuno2233.neml.java.JavaCommandDispatcher"]
+  },
+  "commands": {
+    "list": "列出所有已添加的 Java 并显示版本",
+    "dir add <路径>": "添加一个 Java 目录（bin 上级）",
+    "dir list": "列出所有已添加的 Java 目录",
+    "dir switch <索引>": "切换到指定的 Java 目录",
+    "info": "显示当前选中的 Java 详细信息"
+  }
+}
