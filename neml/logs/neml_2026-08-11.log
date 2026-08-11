@@ -1,77 +1,91 @@
-2026-08-11 02:26:55 INFO [NEML] 发现内置 mod: core
-2026-08-11 02:26:55 INFO [NEML] 发现内置 mod: versions
-2026-08-11 02:26:55 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:26:55 INFO [NEML] 发现内置 mod: launcher
-2026-08-11 02:26:55 INFO [NEML] 发现内置 mod: installer
-2026-08-11 02:26:55 INFO [NEML] 发现内置 mod: java
-2026-08-11 02:26:55 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
-2026-08-11 02:30:53 INFO [NEML] 发现内置 mod: core
-2026-08-11 02:30:53 INFO [NEML] 发现内置 mod: versions
-2026-08-11 02:30:53 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:30:53 INFO [NEML] 发现内置 mod: launcher
-2026-08-11 02:30:53 INFO [NEML] 发现内置 mod: installer
-2026-08-11 02:30:53 INFO [NEML] 发现内置 mod: java
-2026-08-11 02:30:53 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
-2026-08-11 02:33:57 INFO [NEML] 发现内置 mod: core
-2026-08-11 02:33:57 INFO [NEML] 发现内置 mod: versions
-2026-08-11 02:33:57 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:33:57 INFO [NEML] 发现内置 mod: launcher
-2026-08-11 02:33:57 INFO [NEML] 发现内置 mod: installer
-2026-08-11 02:33:57 INFO [NEML] 发现内置 mod: java
-2026-08-11 02:33:57 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
-2026-08-11 02:53:46 INFO [NEML] 发现内置 mod: core
-2026-08-11 02:53:46 INFO [NEML] 发现内置 mod: versions
-2026-08-11 02:53:46 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:53:46 INFO [NEML] 发现内置 mod: launcher
-2026-08-11 02:53:46 INFO [NEML] 发现内置 mod: installer
-2026-08-11 02:53:46 INFO [NEML] 发现内置 mod: java
-2026-08-11 02:53:46 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
-2026-08-11 02:53:57 INFO [NEML] 发现内置 mod: core
-2026-08-11 02:53:57 INFO [NEML] 发现内置 mod: versions
-2026-08-11 02:53:57 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:53:57 INFO [NEML] 发现内置 mod: launcher
-2026-08-11 02:53:57 INFO [NEML] 发现内置 mod: installer
-2026-08-11 02:53:57 INFO [NEML] 发现内置 mod: java
-2026-08-11 02:53:57 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
-2026-08-11 02:55:10 INFO [NEML] 发现内置 mod: core
-2026-08-11 02:55:10 INFO [NEML] 发现内置 mod: versions
-2026-08-11 02:55:10 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:55:10 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:55:10 INFO [NEML] 发现内置 mod: installer
-2026-08-11 02:55:10 INFO [NEML] 发现内置 mod: java
-2026-08-11 02:55:10 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
-2026-08-11 02:57:20 INFO [NEML] 发现内置 mod: core
-2026-08-11 02:57:20 INFO [NEML] 发现内置 mod: versions
-2026-08-11 02:57:20 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:57:20 INFO [NEML] 发现内置 mod: account
-2026-08-11 02:57:20 INFO [NEML] 发现内置 mod: installer
-2026-08-11 02:57:20 INFO [NEML] 发现内置 mod: java
-2026-08-11 02:57:20 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
-2026-08-11 03:16:59 INFO [NEML] 发现内置 mod: core
-2026-08-11 03:16:59 INFO [NEML] 发现内置 mod: versions
-2026-08-11 03:16:59 INFO [NEML] 发现内置 mod: account
-2026-08-11 03:16:59 INFO [NEML] 发现内置 mod: account
-2026-08-11 03:16:59 INFO [NEML] 发现内置 mod: installer
-2026-08-11 03:16:59 INFO [NEML] 发现内置 mod: java
-2026-08-11 03:16:59 INFO [NEML] 初始化 main 入口: core -> io.github.yuno2233.neml.core.CoreMainInit
-2026-08-11 03:18:52 INFO [NEML] 发现内置 mod: core
-2026-08-11 03:18:52 INFO [NEML] 发现内置 mod: versions
-2026-08-11 03:18:52 INFO [NEML] 发现内置 mod: account
-2026-08-11 03:18:52 INFO [NEML] 发现内置 mod: account
-2026-08-11 03:18:52 INFO [NEML] 发现内置 mod: installer
-2026-08-11 03:18:52 INFO [NEML] 发现内置 mod: java
-2026-08-11 03:18:52 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
-2026-08-11 03:18:53 SEVERE [NEML] 执行失败: Cannot invoke "com.google.gson.JsonElement.getAsString()" because the return value of "com.google.gson.JsonObject.get(String)" is null
-java.lang.NullPointerException: Cannot invoke "com.google.gson.JsonElement.getAsString()" because the return value of "com.google.gson.JsonObject.get(String)" is null
-	at io.github.yuno2233.neml.account.AccountCommandDispatcher.addThirdPartyAccount(AccountCommandDispatcher.java:241)
-	at io.github.yuno2233.neml.account.AccountCommandDispatcher.execute(AccountCommandDispatcher.java:46)
-	at com.github.yuno2233.neml.mod.ModLoader.executeCommand(ModLoader.java:176)
-	at com.github.yuno2233.neml.Launcher.main(Launcher.java:51)
-
-2026-08-11 03:22:41 INFO [NEML] 发现内置 mod: core
-2026-08-11 03:22:41 INFO [NEML] 发现内置 mod: versions
-2026-08-11 03:22:41 INFO [NEML] 发现内置 mod: account
-2026-08-11 03:22:41 INFO [NEML] 发现内置 mod: account
-2026-08-11 03:22:41 INFO [NEML] 发现内置 mod: installer
-2026-08-11 03:22:41 INFO [NEML] 发现内置 mod: java
-2026-08-11 03:22:41 INFO [NEML] 初始化 main 入口: account -> io.github.yuno2233.neml.account.AccountMain
+2026-08-11 04:35:32 INFO [NEML] 发现内置 mod: core
+2026-08-11 04:35:32 INFO [NEML] 发现内置 mod: versions
+2026-08-11 04:35:32 INFO [NEML] 发现内置 mod: account
+2026-08-11 04:35:32 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 04:35:32 INFO [NEML] 发现内置 mod: installer
+2026-08-11 04:35:32 INFO [NEML] 发现内置 mod: java
+2026-08-11 04:35:32 INFO [NEML] 初始化 main 入口: versions -> io.github.yuno2233.neml.versions.VersionsMain
+2026-08-11 04:35:49 INFO [NEML] 发现内置 mod: core
+2026-08-11 04:35:49 INFO [NEML] 发现内置 mod: versions
+2026-08-11 04:35:49 INFO [NEML] 发现内置 mod: account
+2026-08-11 04:35:49 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 04:35:49 INFO [NEML] 发现内置 mod: installer
+2026-08-11 04:35:49 INFO [NEML] 发现内置 mod: java
+2026-08-11 04:35:49 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-11 04:40:33 INFO [NEML] 发现内置 mod: core
+2026-08-11 04:40:33 INFO [NEML] 发现内置 mod: versions
+2026-08-11 04:40:33 INFO [NEML] 发现内置 mod: account
+2026-08-11 04:40:33 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 04:40:33 INFO [NEML] 发现内置 mod: installer
+2026-08-11 04:40:33 INFO [NEML] 发现内置 mod: java
+2026-08-11 04:40:34 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-11 04:40:59 INFO [NEML] 发现内置 mod: core
+2026-08-11 04:40:59 INFO [NEML] 发现内置 mod: versions
+2026-08-11 04:40:59 INFO [NEML] 发现内置 mod: account
+2026-08-11 04:40:59 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 04:40:59 INFO [NEML] 发现内置 mod: installer
+2026-08-11 04:40:59 INFO [NEML] 发现内置 mod: java
+2026-08-11 04:40:59 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-11 04:41:02 INFO [NEML] 发现内置 mod: core
+2026-08-11 04:41:02 INFO [NEML] 发现内置 mod: versions
+2026-08-11 04:41:02 INFO [NEML] 发现内置 mod: account
+2026-08-11 04:41:02 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 04:41:02 INFO [NEML] 发现内置 mod: installer
+2026-08-11 04:41:02 INFO [NEML] 发现内置 mod: java
+2026-08-11 04:41:02 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-11 04:41:12 INFO [NEML] 发现内置 mod: core
+2026-08-11 04:41:12 INFO [NEML] 发现内置 mod: versions
+2026-08-11 04:41:12 INFO [NEML] 发现内置 mod: account
+2026-08-11 04:41:12 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 04:41:12 INFO [NEML] 发现内置 mod: installer
+2026-08-11 04:41:12 INFO [NEML] 发现内置 mod: java
+2026-08-11 04:41:12 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-11 05:21:55 INFO [NEML] 发现内置 mod: core
+2026-08-11 05:21:55 INFO [NEML] 发现内置 mod: versions
+2026-08-11 05:21:55 INFO [NEML] 发现内置 mod: account
+2026-08-11 05:21:55 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 05:21:55 INFO [NEML] 发现内置 mod: installer
+2026-08-11 05:21:55 INFO [NEML] 发现内置 mod: java
+2026-08-11 05:21:55 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-11 05:22:03 INFO [NEML] 发现内置 mod: core
+2026-08-11 05:22:03 INFO [NEML] 发现内置 mod: versions
+2026-08-11 05:22:03 INFO [NEML] 发现内置 mod: account
+2026-08-11 05:22:03 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 05:22:03 INFO [NEML] 发现内置 mod: installer
+2026-08-11 05:22:03 INFO [NEML] 发现内置 mod: java
+2026-08-11 05:22:03 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-11 05:22:19 INFO [NEML] 发现内置 mod: core
+2026-08-11 05:22:19 INFO [NEML] 发现内置 mod: versions
+2026-08-11 05:22:19 INFO [NEML] 发现内置 mod: account
+2026-08-11 05:22:19 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 05:22:19 INFO [NEML] 发现内置 mod: installer
+2026-08-11 05:22:19 INFO [NEML] 发现内置 mod: java
+2026-08-11 05:22:19 INFO [NEML] 初始化 main 入口: installer -> io.github.yuno2233.neml.installer.InstallerMain
+2026-08-11 05:22:53 INFO [NEML] 发现内置 mod: core
+2026-08-11 05:22:53 INFO [NEML] 发现内置 mod: versions
+2026-08-11 05:22:53 INFO [NEML] 发现内置 mod: account
+2026-08-11 05:22:53 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 05:22:53 INFO [NEML] 发现内置 mod: installer
+2026-08-11 05:22:53 INFO [NEML] 发现内置 mod: java
+2026-08-11 05:22:53 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-11 05:34:34 INFO [NEML] 发现内置 mod: core
+2026-08-11 05:34:34 INFO [NEML] 发现内置 mod: versions
+2026-08-11 05:34:34 INFO [NEML] 发现内置 mod: account
+2026-08-11 05:34:34 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 05:34:34 INFO [NEML] 发现内置 mod: installer
+2026-08-11 05:34:34 INFO [NEML] 发现内置 mod: java
+2026-08-11 05:34:34 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-11 05:43:26 INFO [NEML] 发现内置 mod: core
+2026-08-11 05:43:26 INFO [NEML] 发现内置 mod: versions
+2026-08-11 05:43:26 INFO [NEML] 发现内置 mod: account
+2026-08-11 05:43:26 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 05:43:26 INFO [NEML] 发现内置 mod: installer
+2026-08-11 05:43:26 INFO [NEML] 发现内置 mod: java
+2026-08-11 05:43:26 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain
+2026-08-11 05:55:01 INFO [NEML] 发现内置 mod: core
+2026-08-11 05:55:01 INFO [NEML] 发现内置 mod: versions
+2026-08-11 05:55:01 INFO [NEML] 发现内置 mod: account
+2026-08-11 05:55:01 INFO [NEML] 发现内置 mod: launcher
+2026-08-11 05:55:01 INFO [NEML] 发现内置 mod: installer
+2026-08-11 05:55:01 INFO [NEML] 发现内置 mod: java
+2026-08-11 05:55:01 INFO [NEML] 初始化 main 入口: launcher -> io.github.yuno2233.neml.launcher.LauncherMain

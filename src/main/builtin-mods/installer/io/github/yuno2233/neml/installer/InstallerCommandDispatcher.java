@@ -91,11 +91,30 @@ public class InstallerCommandDispatcher implements CommandProvider {
         Path versionDir = versionsDir.resolve(customName);
         Path jarFile = versionDir.resolve(customName + ".jar");
 
+        // 如果文件存在，校验大小（如有期望大小）
         if (Files.exists(jarFile)) {
-            System.out.println("客户端 jar 已存在: " + jarFile.toAbsolutePath());
-            return;
+            Path jsonFile = versionDir.resolve(customName + ".json");
+            if (Files.exists(jsonFile)) {
+                String jsonContent = Files.readString(jsonFile);
+                JsonObject versionJson = new Gson().fromJson(jsonContent, JsonObject.class);
+                if (versionJson.has("downloads") && versionJson.getAsJsonObject("downloads").has("client")) {
+                    JsonObject clientInfo = versionJson.getAsJsonObject("downloads").getAsJsonObject("client");
+                    long expectedSize = clientInfo.has("size") ? clientInfo.get("size").getAsLong() : -1;
+                    if (expectedSize > 0 && Files.size(jarFile) != expectedSize) {
+                        System.out.println("客户端 jar 大小不匹配，重新下载...");
+                        Files.delete(jarFile);
+                    } else {
+                        System.out.println("客户端 jar 已存在: " + jarFile.toAbsolutePath());
+                        return;
+                    }
+                } else {
+                    System.out.println("客户端 jar 已存在 (无校验信息): " + jarFile.toAbsolutePath());
+                    return;
+                }
+            }
         }
 
+        // 下载逻辑（原有代码不变）
         Path jsonFile = versionDir.resolve(customName + ".json");
         if (!Files.exists(jsonFile)) {
             throw new Exception("版本 JSON 不存在，请先下载");
@@ -199,6 +218,35 @@ public class InstallerCommandDispatcher implements CommandProvider {
         }
 
         System.out.println("库文件处理完成: 总计 " + total + " 个，本次下载 " + downloaded + " 个。");
+        
+        // 强制解压所有原生库（确保 natives 目录完整）
+        
+        for (JsonElement libElem : libraries) {
+            JsonObject libObj = libElem.getAsJsonObject();
+            if (!shouldDownloadLibrary(libObj)) continue;
+            if (libObj.has("natives")) {
+                JsonObject natives = libObj.getAsJsonObject("natives");
+                String osKey = IS_MAC ? "osx" : (IS_WINDOWS ? "windows" : "linux");
+                if (natives.has(osKey)) {
+                    String classifier = natives.get(osKey).getAsString();
+                    if (libObj.has("downloads") && libObj.getAsJsonObject("downloads").has("classifiers")) {
+                        JsonObject classifiers = libObj.getAsJsonObject("downloads").getAsJsonObject("classifiers");
+                        if (classifiers.has(classifier)) {
+                            JsonObject nativeInfo = classifiers.getAsJsonObject(classifier);
+                            String path = nativeInfo.get("path").getAsString();
+                            Path targetPath = librariesDir.resolve(path);
+                            if (Files.exists(targetPath)) {
+                                try {
+                                    extractNatives(targetPath, nativesDir);
+                                } catch (Exception e) {
+                                    log.warning("解压原生库失败: " + path);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void downloadAssets(Path mcDir, String versionId, String customName) throws Exception {

@@ -199,6 +199,14 @@ public class LauncherCommandDispatcher implements CommandProvider {
             String classpathStr = buildClasspath(versionDir, versionId, librariesBase, versionJson);
             variables.put("classpath", classpathStr);
 
+            // 检查版本 jar 是否存在
+            Path versionJar = versionDir.resolve(versionId + ".jar");
+            if (!Files.exists(versionJar)) {
+                System.out.println("错误: 找不到版本 jar 文件: " + versionJar);
+                System.out.println("请重新安装该版本: neml installer install " + versionId);
+                return;
+            }
+
             // 提取 JVM 参数（不自动添加）
             List<String> jvmArgs = new ArrayList<>();
             if (versionJson.has("arguments")) {
@@ -255,14 +263,11 @@ public class LauncherCommandDispatcher implements CommandProvider {
                 jvmArgs.add("-Dauthlibinjector.debug=all"); // 可选
             }
             
+            // 构建最终命令
             List<String> command = new ArrayList<>();
-            command.add(javaBin);
-            jvmArgs.add("-Djava.library.path=" + nativesDir.toAbsolutePath().toString());
-            command.addAll(jvmArgs);
-            command.add(mainClass);
-            command.addAll(gameArgs);
-            
-            // 如果 JVM 参数中没有指定 classpath，自动添加
+            command.add(javaBin);                       // 1. java 可执行文件
+
+            // 如果 JVM 参数中没有显式指定 classpath，则插入 -cp 和 classpath
             boolean hasClasspath = false;
             for (String arg : jvmArgs) {
                 if (arg.equals("-cp") || arg.equals("-classpath")) {
@@ -271,30 +276,19 @@ public class LauncherCommandDispatcher implements CommandProvider {
                 }
             }
             if (!hasClasspath) {
-                command.add("-cp");
-                command.add(classpathStr); // classpathStr 已在前面通过 buildClasspath 计算
-            }
-            command.add(mainClass);
-            
-            // 从版本配置中添加自定义 JVM 参数
-            if (versionConfig.has("jvmArgs")) {
-                JsonArray customJvm = versionConfig.getAsJsonArray("jvmArgs");
-                for (JsonElement e : customJvm) {
-                    jvmArgs.add(replaceVariables(e.getAsString(), variables));
-                }
+                jvmArgs.add("-cp");
+                jvmArgs.add(classpathStr);
             }
 
-            // 从版本配置中添加自定义游戏参数
-            if (versionConfig.has("gameArgs")) {
-                JsonArray customGame = versionConfig.getAsJsonArray("gameArgs");
-                for (JsonElement e : customGame) {
-                    gameArgs.add(replaceVariables(e.getAsString(), variables));
-                }
-            }
-     
+            command.addAll(jvmArgs);                    // 2. 所有 JVM 参数（含 -cp classpath）
+            command.add(mainClass);                     // 3. 主类
+            command.addAll(gameArgs);                   // 4. 游戏参数
+
+            System.out.println("完整启动命令: " + String.join(" ", command));
+
             ProcessBuilder pb = new ProcessBuilder(command);
             pb.inheritIO();
-            pb.directory(mcDir.toFile());
+            pb.directory(gameDir.toFile());
 
             System.out.println("启动游戏 " + versionId + " 以玩家 " + username + "...");
             Process process = pb.start();
