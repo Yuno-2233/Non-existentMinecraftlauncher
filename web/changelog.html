@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更新日志 - NEML</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid #30363d;
+            background: rgba(13,17,23,0.9);
+        }
+        nav .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #58a6ff, #bc8cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav a { color: #c9d1d9; text-decoration: none; margin-left: 25px; }
+        nav a:hover { color: #58a6ff; }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        h1 {
+            color: #f0f6fc;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        .version {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .version-num {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #58a6ff;
+        }
+        .version-date {
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+        .changes-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .changes-list li {
+            padding: 4px 0 4px 1.5em;
+            position: relative;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        .changes-list li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid #30363d;
+            color: #8b949e;
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="logo-text">NEML</span>
+        <div>
+            <a href="index.html">首页</a>
+            <a href="docs.html">文档</a>
+            <a href="download.html">下载</a>
+            <a href="changelog.html">更新日志</a>
+            <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>更新日志</h1>
+        <div id="changelog"></div>
+    </div>
+    <footer>
+        <p>NEML 2025-2026 | MIT License | <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a></p>
+    </footer>
+
+    <script>
+        fetch('changelog.json')
+            .then(response => response.json())
+            .then(data => {
+                const changelogDiv = document.getElementById('changelog');
+                data.forEach(entry => {
+                    const versionDiv = document.createElement('div');
+                    versionDiv.className = 'version';
+                    versionDiv.innerHTML = `
+                        <div class="version-header">
+                            <span class="version-num">${entry.version}</span>
+                            <span class="version-date">${entry.date}</span>
+                        </div>
+                        <ul class="changes-list">
+                            ${entry.changes.map(change => `<li>${change}</li>`).join('')}
+                        </ul>
+                    `;
+                    changelogDiv.appendChild(versionDiv);
+                });
+            })
+            .catch(err => {
+                document.getElementById('changelog').innerHTML = '<p>加载日志失败，请稍后重试。</p>';
+                console.error(err);
+            });
+    </script>
+</body>
+</html>

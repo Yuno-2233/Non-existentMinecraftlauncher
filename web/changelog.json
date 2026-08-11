@@ -1,0 +1,32 @@
+[
+  {
+    "version": "v2.0.3-alphav5.9-beta.3",
+    "date": "2026-08-11",
+    "changes": [
+      "修复启动命令中 -cp 参数位置错误的问题",
+      "优化原生库解压逻辑，强制解压确保 natives 完整",
+      "完善 account mod：支持第三方验证及多角色选择",
+      "官网正式上线，包含文档、下载页面"
+    ]
+  },
+  {
+    "version": "v2.0.2",
+    "date": "2026-08-10",
+    "changes": [
+      "实现 installer mod，支持版本安装、资源下载",
+      "新增 java mod，支持多 Java 目录管理",
+      "完善 versions mod：隔离、单独配置、多目录切换",
+      "launcher 现在支持版本自定义 JVM 参数和 Java 路径"
+    ]
+  },
+  {
+    "version": "v2.0.1",
+    "date": "2026-08-09",
+    "changes": [
+      "引擎核心完成：Mod 发现、依赖解析、类加载器隔离",
+      "内置 core mod 提供 list、reload、help 命令",
+      "内置 account mod 支持离线、微软、第三方登录",
+      "内置 versions mod 支持多目录管理、版本扫描"
+    ]
+  }
+]
