@@ -42,7 +42,6 @@
             padding: 25px;
             color: #c9d1d9;
         }
-        .loading { text-align: center; padding: 40px; color: #8b949e; }
     </style>
 </head>
 <body>
@@ -63,9 +62,7 @@
                 <h3>目录</h3>
                 <ul id="toc"></ul>
             </aside>
-            <main class="content" id="reader-content">
-                <div class="loading">正在加载文档...</div>
-            </main>
+            <main class="content" id="reader-content"></main>
         </div>
     </div>
     <footer>
@@ -109,8 +106,6 @@
                     await rendition.display(toc[0].href);
                     const firstLi = tocList.querySelector('li');
                     if (firstLi) firstLi.classList.add('active');
-                } else {
-                    contentDiv.innerHTML = '<p class="loading">文档中没有内容。</p>';
                 }
                 rendition.on('rendered', (section) => {
                     document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
@@ -119,7 +114,7 @@
                 });
             } catch (error) {
                 console.error('加载文档失败:', error);
-                contentDiv.innerHTML = '<p class="loading">文档加载失败，请确保 docs.epub 文件存在且格式正确。错误信息：' + error.message + '</p>';
+                contentDiv.innerHTML = '<p style="text-align:center;padding:40px;color:#8b949e;">文档加载失败，请确保 docs.epub 文件存在且格式正确。错误信息：' + error.message + '</p>';
             }
         })();
     </script>
