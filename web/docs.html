@@ -6,12 +6,11 @@
     <title>文档 - NEML</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%2358a6ff;stop-opacity:1'/><stop offset='100%25' style='stop-color:%23bc8cff;stop-opacity:1'/></linearGradient></defs><text x='50' y='80' font-family='system-ui,sans-serif' font-size='80' font-weight='bold' fill='url(%23g)' text-anchor='middle'>N</text></svg>">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        .reader-container {
+        .doc-container {
             display: flex;
-            height: calc(100vh - 130px);
+            min-height: calc(100vh - 130px);
             margin-top: 20px;
             border: 1px solid #30363d;
             border-radius: 8px;
@@ -42,6 +41,25 @@
             padding: 25px;
             color: #c9d1d9;
         }
+        .content h1, .content h2, .content h3 {
+            color: #f0f6fc;
+            margin: 1em 0 0.5em;
+        }
+        .content p { line-height: 1.6; margin-bottom: 1em; }
+        .content code {
+            background: #2d333b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        .content pre {
+            background: #21262d;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +75,7 @@
     </nav>
     <div class="container">
         <h1>项目文档</h1>
-        <div class="reader-container">
+        <div class="doc-container">
             <aside class="sidebar">
                 <h3>目录</h3>
                 <ul id="toc"></ul>
@@ -70,51 +88,46 @@
     </footer>
     <script>
         (async function() {
-            const contentDiv = document.getElementById('reader-content');
             const tocList = document.getElementById('toc');
+            const contentDiv = document.getElementById('reader-content');
+
             try {
-                const book = ePub('docs.epub');
-                const rendition = book.renderTo('reader-content', {
-                    width: '100%',
-                    height: '100%',
-                    spread: 'none',
-                    flow: 'paginated',
-                    manager: 'default'
-                });
-                await book.ready;
-                const toc = book.navigation.toc;
-                function buildToc(items, parent) {
-                    items.forEach(item => {
-                        const li = document.createElement('li');
-                        li.textContent = item.label;
-                        li.setAttribute('data-href', item.href);
-                        li.addEventListener('click', () => {
-                            rendition.display(item.href);
-                            document.querySelectorAll('.sidebar li').forEach(el => el.classList.remove('active'));
-                            li.classList.add('active');
-                        });
-                        parent.appendChild(li);
-                        if (item.subitems && item.subitems.length > 0) {
-                            const ul = document.createElement('ul');
-                            li.appendChild(ul);
-                            buildToc(item.subitems, ul);
-                        }
+                // 加载目录结构
+                const tocRes = await fetch('docs/index.json');
+                const tocData = await tocRes.json();
+
+                // 构建侧边栏
+                tocData.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = item.title;
+                    li.addEventListener('click', () => {
+                        loadDocument(item.file);
+                        document.querySelectorAll('.sidebar li').forEach(el => el.classList.remove('active'));
+                        li.classList.add('active');
                     });
-                }
-                buildToc(toc, tocList);
-                if (toc.length > 0) {
-                    await rendition.display(toc[0].href);
-                    const firstLi = tocList.querySelector('li');
-                    if (firstLi) firstLi.classList.add('active');
-                }
-                rendition.on('rendered', (section) => {
-                    document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
-                    const matchingLi = document.querySelector(`.sidebar li[data-href="${section.href}"]`);
-                    if (matchingLi) matchingLi.classList.add('active');
+                    tocList.appendChild(li);
                 });
+
+                // 默认加载第一个文档
+                if (tocData.length > 0) {
+                    const firstLi = tocList.querySelector('li');
+                    firstLi.classList.add('active');
+                    await loadDocument(tocData[0].file);
+                }
             } catch (error) {
-                console.error('加载文档失败:', error);
-                contentDiv.innerHTML = '<p style="text-align:center;padding:40px;color:#8b949e;">文档加载失败，请确保 docs.epub 文件存在且格式正确。错误信息：' + error.message + '</p>';
+                contentDiv.innerHTML = '<p>无法加载文档目录。</p>';
+                console.error(error);
+            }
+
+            async function loadDocument(filename) {
+                try {
+                    const res = await fetch(`docs/${filename}`);
+                    const markdown = await res.text();
+                    contentDiv.innerHTML = marked.parse(markdown);
+                } catch (error) {
+                    contentDiv.innerHTML = `<p>无法加载文档：${filename}</p>`;
+                    console.error(error);
+                }
             }
         })();
     </script>
