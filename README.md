@@ -1,8 +1,5 @@
-
-
-## 标题
-`Non-existentMinecraftLauncher (NEML) Engine`
-副标题或简介：一个极简、无图形界面、基于 Mod 化架构的 Minecraft 启动器引擎。
+## Non-existentMinecraftLauncher (NEML) Engine
+一个极简、无图形界面、基于 Mod 化架构的 Minecraft 启动器引擎。
 
 ## 项目简介
 NEML 引擎本身不包含任何 Minecraft 启动功能，所有实际能力（如版本安装、游戏启动、账号认证等）均由 Mod 提供。引擎仅负责 Mod 的发现、依赖解析、加载排序和命令分发，同时提供统一的日志接口与基础 API。
@@ -13,6 +10,8 @@ java -jar neml.jar <modid> [参数...]
 ```
 每次执行仅加载目标 Mod 及其依赖树，其他 Mod 不参与，从而实现冷启动零感知。适用于需要深度定制启动流程的开发者，或作为其他启动器的底层驱动核心。
 
+---
+
 ## 主要特性
 - 纯 CLI 交互，无任何图形界面
 - 支持内置 Mod 与外部 Mod 双重加载机制
@@ -22,11 +21,13 @@ java -jar neml.jar <modid> [参数...]
 - 轻量日志系统，同时输出到控制台和文件，自动按日期滚动，并可防止日志文件堆积
 - 严格遵守 Maven 标准项目结构，跨平台 JVM 运行
 
+---
+
 ## 快速开始
 1. 环境要求：Java 11 或更高版本，Maven（仅从源码构建时需要）
 2. 获取引擎 Jar：
 - 自行构建：`mvn clean package`，产物位于 `target/neml.jar`
-- github的发布页面将在测试完成后发布, 注意2.0.1及一下版本为废弃版本。
+- [github发布页面](https://github.com/Yuno-2233/Non-existentMinecraftlauncher/releases)
 3. 运行：
 ```
 java -jar neml.jar core list
@@ -52,6 +53,9 @@ java -jar neml.jar core list
 java -jar neml.jar core reload
 java -jar neml.jar core help
 ```
+其余内置mod可通过 `core list` 命令查看
+
+---
 
 ## Mod 开发指南
 完整的 Mod 开发规范请查阅
@@ -73,11 +77,14 @@ java -jar neml.jar core help
     └── BUILTIN_MOD_SPEC.md                  （Mod 开发规范文档）
 ```
 
+---
+
 ## 未来计划
-- 实现 Minecraft 原版安装 Mod（`installer`）
-- 实现游戏启动 Mod（`launcher`），支持离线登录与参数配置
+- 支持正版账号登录
 - 支持外部 Mod 的完整生命周期管理
 - 提供更灵活的命令注册与帮助生成机制
+
+---
 
 ## 法律信息
 
