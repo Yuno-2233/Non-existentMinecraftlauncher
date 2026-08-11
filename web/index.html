@@ -26,10 +26,81 @@
         </div>
     </header>
     <div class="container">
-        <!-- 首页内容保持不变，省略长篇内容，但请确保包含原来的所有章节 -->
+        <h2>核心特性</h2>
+        <div class="features">
+            <div class="feature-card">
+                <h3>Mod 架构</h3>
+                <p>所有功能均由 Mod 提供，引擎本身仅负责发现、依赖解析与隔离加载。</p>
+            </div>
+            <div class="feature-card">
+                <h3>零感知启动</h3>
+                <p>精调 JVM 参数，引擎瞬间响应，自动选择最优 Java 运行时。</p>
+            </div>
+            <div class="feature-card">
+                <h3>全面兼容</h3>
+                <p>支持原版、Forge、Fabric、NeoForge，自动处理资源与原生库。</p>
+            </div>
+            <div class="feature-card">
+                <h3>账号系统</h3>
+                <p>离线、微软正版、第三方验证，多角色管理。</p>
+            </div>
+            <div class="feature-card">
+                <h3>跨平台</h3>
+                <p>纯 Java 实现，支持 Windows、Linux、macOS。</p>
+            </div>
+            <div class="feature-card">
+                <h3>自动构建</h3>
+                <p>GitHub Actions 自动构建发布，推送标签即生成 JAR。</p>
+            </div>
+        </div>
+
+        <h2>快速使用</h2>
+        <pre># 查看所有命令
+java -jar neml.jar core help
+
+# 添加 .minecraft 目录
+java -jar neml.jar versions dir add /path/to/.minecraft
+
+# 安装原版 1.21
+java -jar neml.jar installer install 1.21
+
+# 添加离线账号
+java -jar neml.jar account add Steve
+
+# 启动游戏
+java -jar neml.jar launcher launch 1.21</pre>
+
+        <h2>最近更新</h2>
+        <p>最新版本动态，查看 <a href="changelog.html">完整更新日志</a>。</p>
+        <div id="recent-changelog" style="margin-top:20px;"></div>
     </div>
     <footer>
         <p>NEML 2025-2026 | MIT License | <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a></p>
     </footer>
+    <script>
+        fetch('changelog.json')
+            .then(response => response.json())
+            .then(data => {
+                const recentDiv = document.getElementById('recent-changelog');
+                if (data.length > 0) {
+                    const entry = data[0];
+                    recentDiv.innerHTML = `
+                        <div class="version">
+                            <div class="version-header">
+                                <span class="version-num">${entry.version}</span>
+                                <span class="version-date">${entry.date}</span>
+                            </div>
+                            <ul class="changes-list">
+                                ${entry.changes.map(c => `<li>${c}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+            })
+            .catch(err => {
+                document.getElementById('recent-changelog').innerHTML = '<p>无法加载最近更新。</p>';
+                console.error(err);
+            });
+    </script>
 </body>
 </html>
