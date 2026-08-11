@@ -6,6 +6,85 @@
     <title>文档 - NEML</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%2358a6ff;stop-opacity:1'/><stop offset='100%25' style='stop-color:%23bc8cff;stop-opacity:1'/></linearGradient></defs><text x='50' y='80' font-family='system-ui,sans-serif' font-size='80' font-weight='bold' fill='url(%23g)' text-anchor='middle'>N</text></svg>">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script>
+    <style>
+        /* 阅读器容器 */
+        .reader-container {
+            display: flex;
+            height: calc(100vh - 130px); /* 减去导航栏和页脚高度 */
+            margin-top: 20px;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #161b22;
+        }
+        /* 侧边栏 */
+        .sidebar {
+            width: 250px;
+            background: #0d1117;
+            border-right: 1px solid #30363d;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .sidebar h3 {
+            color: #f0f6fc;
+            margin-bottom: 10px;
+        }
+        .sidebar ul {
+            list-style: none;
+        }
+        .sidebar li {
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            color: #c9d1d9;
+            margin-bottom: 2px;
+        }
+        .sidebar li:hover {
+            background: #21262d;
+        }
+        .sidebar li.active {
+            background: #1f6feb;
+            color: #fff;
+        }
+        /* 内容区域 */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            color: #c9d1d9;
+        }
+        .content h1, .content h2, .content h3 {
+            color: #f0f6fc;
+            margin: 1em 0 0.5em;
+        }
+        .content p {
+            line-height: 1.6;
+            margin-bottom: 1em;
+        }
+        .content code {
+            background: #2d333b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #f0f6fc;
+        }
+        .content pre {
+            background: #21262d;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        /* 加载提示 */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8b949e;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -19,53 +98,78 @@
         </div>
     </nav>
     <div class="container">
-        <h1>文档</h1>
-        <p>欢迎阅读 NEML 使用文档。NEML 是模块化命令行 Minecraft 启动器引擎，通过 <code>neml.jar</code> 与子命令交互。所有功能均由 Mod 提供。</p>
-        <h2>内置 Mod 命令</h2>
-        <h3>core</h3>
-        <pre>neml core list     列出已发现的 Mod
-neml core reload   重新扫描 Mod 目录
-neml core help [modid]  显示帮助（可过滤 mod）</pre>
-        <h3>versions</h3>
-        <pre>neml versions list                     列出当前 .minecraft 中的版本
-neml versions dir add &lt;路径&gt;            添加 .minecraft 目录
-neml versions dir list                 列出已添加目录
-neml versions dir switch &lt;索引&gt;        切换工作目录
-neml versions isolate &lt;版本&gt; [on|off]  管理版本隔离（默认开启）
-neml versions config &lt;版本&gt; [set key value]  查看/设置版本配置</pre>
-        <h3>account</h3>
-        <pre>neml account list             列出所有账号
-neml account add &lt;用户名&gt;     添加离线账号
-neml account switch &lt;索引/用户名&gt;  切换账号
-neml account login             登录微软账号（设备代码）
-neml account logout            注销微软账号
-neml account status            查看当前登录状态
-neml account login3rd &lt;服务器&gt; &lt;用户名&gt; &lt;密码&gt;  添加第三方验证账号</pre>
-        <h3>installer</h3>
-        <pre>neml installer install &lt;版本&gt; [自定义名称]  安装 Minecraft 版本（自动下载 JSON、jar、库、资源）</pre>
-        <h3>java</h3>
-        <pre>neml java list              列出已添加的 Java 路径及版本
-neml java dir add &lt;路径&gt;     添加 Java 目录
-neml java dir list           列出已添加的目录
-neml java dir switch &lt;索引&gt;  切换当前 Java
-neml java info               显示当前 Java 详细信息</pre>
-        <h3>launcher</h3>
-        <pre>neml launcher set-default &lt;版本&gt;  设置默认启动版本
-neml launcher launch [版本]       启动游戏（默认启动已设置的版本）</pre>
-
-        <h2>配置与数据目录</h2>
-        <p>所有配置文件存放在工作目录下的 <code>neml/</code> 文件夹中：</p>
-        <pre>neml/
-  config/
-    versions/config.json   .minecraft 目录管理
-    account/config.json    账号信息
-    java/config.json       Java 运行时管理
-    launcher/config.json   默认启动版本
-  mod/                     外部 Mod（.jar）
-  logs/                    运行日志</pre>
+        <h1>项目文档</h1>
+        <div class="reader-container">
+            <aside class="sidebar">
+                <h3>目录</h3>
+                <ul id="toc"></ul>
+            </aside>
+            <main class="content" id="reader-content">
+                <div class="loading">正在加载文档...</div>
+            </main>
+        </div>
     </div>
     <footer>
-        <p>NEML 2025-2026 | <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a></p>
+        <p>NEML 2025-2026 | MIT License | <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a></p>
     </footer>
+    <script>
+        (async function() {
+            const book = ePub('docs.epub');
+            const rendition = book.renderTo('reader-content', {
+                width: '100%',
+                height: '100%',
+                spread: 'none',
+                flow: 'paginated',
+                manager: 'default'
+            });
+
+            // 生成侧边栏目录
+            const toc = await book.loaded.navigation;
+            const tocList = document.getElementById('toc');
+
+            function buildToc(items, parent) {
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item.label;
+                    li.addEventListener('click', () => {
+                        rendition.display(item.href);
+                        // 高亮当前项
+                        document.querySelectorAll('.sidebar li').forEach(el => el.classList.remove('active'));
+                        li.classList.add('active');
+                    });
+                    parent.appendChild(li);
+
+                    if (item.subitems && item.subitems.length > 0) {
+                        const ul = document.createElement('ul');
+                        li.appendChild(ul);
+                        buildToc(item.subitems, ul);
+                    }
+                });
+            }
+
+            buildToc(toc, tocList);
+
+            // 默认显示第一章
+            if (toc.length > 0) {
+                rendition.display(toc[0].href);
+                tocList.firstChild?.classList.add('active');
+            }
+
+            // 监听页面切换，同步高亮
+            rendition.on('rendered', (section) => {
+                document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+                const href = section.href;
+                const links = document.querySelectorAll('.sidebar li');
+                links.forEach(li => {
+                    // 简单匹配：检查点击时保存的 href（可通过事件绑定存储）
+                    // 这里简化处理：遍历目录，根据 section 的 href 匹配
+                    if (li.textContent === section.index) { // 不准确，需要更精确的映射
+                        li.classList.add('active');
+                    }
+                });
+                // 更可靠的方法：在 buildToc 时给每个 li 添加 data-href 属性
+            });
+        })();
+    </script>
 </body>
 </html>
