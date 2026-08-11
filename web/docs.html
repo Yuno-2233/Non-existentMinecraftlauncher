@@ -9,17 +9,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script>
     <style>
-        /* 阅读器容器 */
         .reader-container {
             display: flex;
-            height: calc(100vh - 130px); /* 减去导航栏和页脚高度 */
+            height: calc(100vh - 130px);
             margin-top: 20px;
             border: 1px solid #30363d;
             border-radius: 8px;
             overflow: hidden;
             background: #161b22;
         }
-        /* 侧边栏 */
         .sidebar {
             width: 250px;
             background: #0d1117;
@@ -27,13 +25,8 @@
             overflow-y: auto;
             padding: 15px;
         }
-        .sidebar h3 {
-            color: #f0f6fc;
-            margin-bottom: 10px;
-        }
-        .sidebar ul {
-            list-style: none;
-        }
+        .sidebar h3 { color: #f0f6fc; margin-bottom: 10px; }
+        .sidebar ul { list-style: none; }
         .sidebar li {
             padding: 6px 12px;
             cursor: pointer;
@@ -41,49 +34,15 @@
             color: #c9d1d9;
             margin-bottom: 2px;
         }
-        .sidebar li:hover {
-            background: #21262d;
-        }
-        .sidebar li.active {
-            background: #1f6feb;
-            color: #fff;
-        }
-        /* 内容区域 */
+        .sidebar li:hover { background: #21262d; }
+        .sidebar li.active { background: #1f6feb; color: #fff; }
         .content {
             flex: 1;
             overflow-y: auto;
             padding: 25px;
             color: #c9d1d9;
         }
-        .content h1, .content h2, .content h3 {
-            color: #f0f6fc;
-            margin: 1em 0 0.5em;
-        }
-        .content p {
-            line-height: 1.6;
-            margin-bottom: 1em;
-        }
-        .content code {
-            background: #2d333b;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.9em;
-            color: #f0f6fc;
-        }
-        .content pre {
-            background: #21262d;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 15px 0;
-        }
-        /* 加载提示 */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #8b949e;
-        }
+        .loading { text-align: center; padding: 40px; color: #8b949e; }
     </style>
 </head>
 <body>
@@ -114,61 +73,54 @@
     </footer>
     <script>
         (async function() {
-            const book = ePub('docs.epub');
-            const rendition = book.renderTo('reader-content', {
-                width: '100%',
-                height: '100%',
-                spread: 'none',
-                flow: 'paginated',
-                manager: 'default'
-            });
-
-            // 生成侧边栏目录
-            const toc = await book.loaded.navigation;
+            const contentDiv = document.getElementById('reader-content');
             const tocList = document.getElementById('toc');
-
-            function buildToc(items, parent) {
-                items.forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item.label;
-                    li.addEventListener('click', () => {
-                        rendition.display(item.href);
-                        // 高亮当前项
-                        document.querySelectorAll('.sidebar li').forEach(el => el.classList.remove('active'));
-                        li.classList.add('active');
+            try {
+                const book = ePub('docs.epub');
+                const rendition = book.renderTo('reader-content', {
+                    width: '100%',
+                    height: '100%',
+                    spread: 'none',
+                    flow: 'paginated',
+                    manager: 'default'
+                });
+                await book.ready;
+                const toc = book.navigation.toc;
+                function buildToc(items, parent) {
+                    items.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item.label;
+                        li.setAttribute('data-href', item.href);
+                        li.addEventListener('click', () => {
+                            rendition.display(item.href);
+                            document.querySelectorAll('.sidebar li').forEach(el => el.classList.remove('active'));
+                            li.classList.add('active');
+                        });
+                        parent.appendChild(li);
+                        if (item.subitems && item.subitems.length > 0) {
+                            const ul = document.createElement('ul');
+                            li.appendChild(ul);
+                            buildToc(item.subitems, ul);
+                        }
                     });
-                    parent.appendChild(li);
-
-                    if (item.subitems && item.subitems.length > 0) {
-                        const ul = document.createElement('ul');
-                        li.appendChild(ul);
-                        buildToc(item.subitems, ul);
-                    }
+                }
+                buildToc(toc, tocList);
+                if (toc.length > 0) {
+                    await rendition.display(toc[0].href);
+                    const firstLi = tocList.querySelector('li');
+                    if (firstLi) firstLi.classList.add('active');
+                } else {
+                    contentDiv.innerHTML = '<p class="loading">文档中没有内容。</p>';
+                }
+                rendition.on('rendered', (section) => {
+                    document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+                    const matchingLi = document.querySelector(`.sidebar li[data-href="${section.href}"]`);
+                    if (matchingLi) matchingLi.classList.add('active');
                 });
+            } catch (error) {
+                console.error('加载文档失败:', error);
+                contentDiv.innerHTML = '<p class="loading">文档加载失败，请确保 docs.epub 文件存在且格式正确。错误信息：' + error.message + '</p>';
             }
-
-            buildToc(toc, tocList);
-
-            // 默认显示第一章
-            if (toc.length > 0) {
-                rendition.display(toc[0].href);
-                tocList.firstChild?.classList.add('active');
-            }
-
-            // 监听页面切换，同步高亮
-            rendition.on('rendered', (section) => {
-                document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
-                const href = section.href;
-                const links = document.querySelectorAll('.sidebar li');
-                links.forEach(li => {
-                    // 简单匹配：检查点击时保存的 href（可通过事件绑定存储）
-                    // 这里简化处理：遍历目录，根据 section 的 href 匹配
-                    if (li.textContent === section.index) { // 不准确，需要更精确的映射
-                        li.classList.add('active');
-                    }
-                });
-                // 更可靠的方法：在 buildToc 时给每个 li 添加 data-href 属性
-            });
         })();
     </script>
 </body>
