@@ -25,6 +25,11 @@ nav .logo-text {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow {
+    from { text-shadow: 0 0 5px #58a6ff; }
+    to { text-shadow: 0 0 20px #bc8cff, 0 0 40px #58a6ff; }
 }
 nav a { color: #c9d1d9; text-decoration: none; margin-left: 25px; }
 nav a:hover { color: #58a6ff; }
@@ -103,7 +108,6 @@ footer {
 }
 a { color: #58a6ff; text-decoration: none; }
 a:hover { text-decoration: underline; }
-/* 更新日志专用样式 */
 .version {
     background: #21262d;
     border: 1px solid #30363d;
