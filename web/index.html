@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEML - 轻量级 Minecraft 启动器引擎</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid #30363d;
+            background: rgba(13,17,23,0.9);
+        }
+        nav .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #58a6ff, #bc8cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        nav a { color: #c9d1d9; text-decoration: none; margin-left: 25px; }
+        nav a:hover { color: #58a6ff; }
+        header {
+            text-align: center;
+            padding: 60px 20px 30px;
+        }
+        .hero {
+            font-size: 1.2rem;
+            color: #8b949e;
+            max-width: 700px;
+            margin: 20px auto 0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin: 40px 0 20px;
+            color: #f0f6fc;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 0.3em;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature-card {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.2s;
+        }
+        .feature-card:hover { transform: translateY(-4px); }
+        .feature-card h3 { color: #58a6ff; margin-bottom: 10px; }
+        .feature-card p { color: #8b949e; line-height: 1.6; }
+        code {
+            background: #2d333b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #f0f6fc;
+        }
+        pre {
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #238636, #2ea043);
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px 10px 0 0;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid #30363d;
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="logo-text">NEML</span>
+        <div>
+            <a href="index.html">首页</a>
+            <a href="docs.html">文档</a>
+            <a href="download.html">下载</a>
+            <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a>
+        </div>
+    </nav>
+    <header>
+        <h1 style="font-size:2.5rem; color:#f0f6fc;">Non-existentMinecraftLauncher Engine</h1>
+        <p class="hero">极轻量、模块化的 CLI Minecraft 启动器引擎，零启动延迟，高度可扩展的 Mod 系统。</p>
+        <div style="margin-top:25px">
+            <a href="download.html" class="button">下载最新版</a>
+            <a href="docs.html" class="button" style="background: linear-gradient(135deg, #1f6feb, #388bfd);">快速开始</a>
+        </div>
+    </header>
+    <div class="container">
+        <h2>核心特性</h2>
+        <div class="features">
+            <div class="feature-card">
+                <h3>Mod 架构</h3>
+                <p>所有功能均由 Mod 提供，引擎本身仅负责发现、依赖解析与隔离加载。</p>
+            </div>
+            <div class="feature-card">
+                <h3>零感知启动</h3>
+                <p>精调 JVM 参数，引擎瞬间响应，自动选择最优 Java 运行时。</p>
+            </div>
+            <div class="feature-card">
+                <h3>全面兼容</h3>
+                <p>支持原版、Forge、Fabric、NeoForge，自动处理资源与原生库。</p>
+            </div>
+            <div class="feature-card">
+                <h3>账号系统</h3>
+                <p>离线、微软正版、第三方验证，多角色管理。</p>
+            </div>
+            <div class="feature-card">
+                <h3>跨平台</h3>
+                <p>纯 Java 实现，支持 Windows、Linux、macOS。</p>
+            </div>
+            <div class="feature-card">
+                <h3>自动构建</h3>
+                <p>GitHub Actions 自动构建发布，推送标签即生成 JAR。</p>
+            </div>
+        </div>
+        <h2>快速使用</h2>
+        <pre># 查看所有命令
+java -jar neml.jar core help
+
+# 添加 .minecraft 目录
+java -jar neml.jar versions dir add /path/to/.minecraft
+
+# 安装原版 1.21
+java -jar neml.jar installer install 1.21
+
+# 添加离线账号
+java -jar neml.jar account add Steve
+
+# 启动游戏
+java -jar neml.jar launcher launch 1.21</pre>
+    </div>
+    <footer>
+        <p>NEML 2025-2026 | MIT License | <a href="https://github.com/Yuno-2233/Non-existentMinecraftlauncher">GitHub</a></p>
+    </footer>
+</body>
+</html>
