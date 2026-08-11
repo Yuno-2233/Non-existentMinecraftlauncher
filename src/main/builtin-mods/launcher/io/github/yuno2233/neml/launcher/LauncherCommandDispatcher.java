@@ -262,6 +262,20 @@ public class LauncherCommandDispatcher implements CommandProvider {
             command.add(mainClass);
             command.addAll(gameArgs);
             
+            // 如果 JVM 参数中没有指定 classpath，自动添加
+            boolean hasClasspath = false;
+            for (String arg : jvmArgs) {
+                if (arg.equals("-cp") || arg.equals("-classpath")) {
+                    hasClasspath = true;
+                    break;
+                }
+            }
+            if (!hasClasspath) {
+                command.add("-cp");
+                command.add(classpathStr); // classpathStr 已在前面通过 buildClasspath 计算
+            }
+            command.add(mainClass);
+            
             // 从版本配置中添加自定义 JVM 参数
             if (versionConfig.has("jvmArgs")) {
                 JsonArray customJvm = versionConfig.getAsJsonArray("jvmArgs");
@@ -347,7 +361,7 @@ public class LauncherCommandDispatcher implements CommandProvider {
         return false;
     }
 
-    // ---------- classpath 构建（重要修改） ----------
+    // ---------- classpath 构建 ----------
     private String buildClasspath(Path versionDir, String versionId, Path librariesBase, JsonObject versionJson) {
         Set<String> paths = new LinkedHashSet<>();
         // 版本 jar
@@ -362,7 +376,13 @@ public class LauncherCommandDispatcher implements CommandProvider {
 
             // 主库 jar（无 classifier）
             Path mainLib = resolveLibraryPath(librariesBase, name, null);
-            if (mainLib != null) paths.add(mainLib.toAbsolutePath().toString());
+            if (mainLib != null) {
+                if (Files.exists(mainLib)) {
+                    paths.add(mainLib.toAbsolutePath().toString());
+                } else {
+                    log.warning("库文件缺失，将跳过: " + mainLib);
+                }
+            }
 
             // 如果有 natives 字段，添加对应平台的 native jar
             if (libObj.has("natives")) {

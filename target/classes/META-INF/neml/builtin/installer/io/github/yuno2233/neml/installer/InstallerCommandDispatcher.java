@@ -143,12 +143,25 @@ public class InstallerCommandDispatcher implements CommandProvider {
                 String downloadUrl = artifactInfo.get("url").getAsString();
                 String path = artifactInfo.get("path").getAsString();
                 Path targetPath = librariesDir.resolve(path);
+                long expectedSize = artifactInfo.has("size") ? artifactInfo.get("size").getAsLong() : -1;
+
+                boolean needsDownload = false;
                 if (!Files.exists(targetPath)) {
+                    needsDownload = true;
+                } else if (expectedSize > 0 && Files.size(targetPath) != expectedSize) {
+                    log.warning("库文件大小不符，重新下载: " + path);
+                    needsDownload = true;
+                }
+
+                if (needsDownload) {
                     try {
                         System.out.println("下载库: " + path);
-                        long expectedSize = artifactInfo.has("size") ? artifactInfo.get("size").getAsLong() : -1;
                         downloadFile(downloadUrl, targetPath, expectedSize);
                         downloaded++;
+                        // 再次校验
+                        if (expectedSize > 0 && Files.size(targetPath) != expectedSize) {
+                            log.warning("下载后大小仍不符，请检查网络: " + path);
+                        }
                     } catch (Exception e) {
                         log.warning("下载库失败: " + path + " - " + e.getMessage());
                     }
@@ -156,7 +169,7 @@ public class InstallerCommandDispatcher implements CommandProvider {
             }
         }
 
-        // ========== 新增：无论是否下载，都确保所有原生库被解压 ==========
+        // ========== 无论是否下载，都确保所有原生库被解压 ==========
         Path nativesDir = versionDir.resolve("natives");
         for (JsonElement libElem : libraries) {
             JsonObject libObj = libElem.getAsJsonObject();
