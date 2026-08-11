@@ -3,6 +3,6 @@
   { "title": "快速开始", "file": "quickstart.md" },
   { "title": "内置 Mod 命令", "file": "commands.md" },
   { "title": "配置与数据目录", "file": "config.md" },
-  { "title": "开发 Mod", "file": "dev.md" }
-  { "title": "鸣谢名单", "file": "acknowledgments.md" }
+  { "title": "开发 Mod", "file": "dev.md" },
+  { "title": "鸣谢名单", "file": "thanks.md" }
 ]
