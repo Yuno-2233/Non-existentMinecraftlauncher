@@ -1,6 +1,7 @@
 {
   "id": "launcher",
   "version": "1.0.0",
+  "description": "启动 Minecraft 游戏",
   "mainClass": "io.github.yuno2233.neml.launcher.LauncherMain",
   "depends": {},
   "entrypoints": {
@@ -8,7 +9,7 @@
     "command": ["io.github.yuno2233.neml.launcher.LauncherCommandDispatcher"]
   },
   "commands": {
-    "set-default <版本>": "设置默认启动版本",
-    "launch [版本]": "启动游戏（不指定则启动默认版本）"
+    "set-default": "设置默认启动版本",
+    "launch": "启动游戏（可指定版本）"
   }
 }

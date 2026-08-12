@@ -1,5 +1,13 @@
 [
   {
+    "version": "v2.0.3-alphav5.9-beta.4",
+    "date": "2026-08-12",
+    "changes": [
+      "完善了日志系统",
+      "优化了帮助系统"
+    ]
+  },
+  {
     "version": "v2.0.3-alphav5.9-beta.3",
     "date": "2026-08-11",
     "changes": [

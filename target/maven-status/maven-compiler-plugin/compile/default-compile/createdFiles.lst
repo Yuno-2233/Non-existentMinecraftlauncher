@@ -8,7 +8,6 @@ io/github/yuno2233/neml/java/JavaCommandDispatcher.class
 com/github/yuno2233/neml/log/NemlLogger.class
 com/github/yuno2233/neml/api/ModInitializer.class
 com/github/yuno2233/neml/mod/ModLoader.class
-com/github/yuno2233/neml/mod/SimpleJsonParser$1.class
 io/github/yuno2233/neml/launcher/LauncherMain.class
 com/github/yuno2233/neml/mod/ClassLoaderBuilder$CombinedClassLoader.class
 io/github/yuno2233/neml/installer/InstallerCommandDispatcher.class

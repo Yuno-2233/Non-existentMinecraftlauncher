@@ -1,6 +1,7 @@
 {
   "id": "versions",
   "version": "1.0.0",
+  "description": "管理 Minecraft 版本与工作目录",
   "mainClass": "io.github.yuno2233.neml.versions.VersionsMain",
   "depends": {},
   "entrypoints": {
@@ -8,11 +9,24 @@
     "command": ["io.github.yuno2233.neml.versions.VersionsCommandDispatcher"]
   },
   "commands": {
-    "list": "列出当前 .minecraft 中已安装的版本",
-    "dir add <路径>": "添加一个 .minecraft 目录",
-    "dir list": "列出所有已添加的目录",
-    "dir switch <索引>": "切换到指定目录",
-    "isolate <版本ID> [on|off]": "查看或设置版本隔离",
-    "config <版本ID> [set <key> <value>]": "查看或设置版本单独配置"
+    "list": "列出当前 .minecraft 中的版本",
+    "dir": "管理 .minecraft 目录（add/list/switch）",
+    "isolate": {
+      "description": "查看或设置版本隔离",
+      "usage": "neml versions isolate <版本ID> [on|off]",
+      "args": [
+        {"name": "版本ID", "description": "目标版本", "optional": false},
+        {"name": "on|off", "description": "开启或关闭隔离", "optional": true}
+      ]
+    },
+    "config": {
+      "description": "查看或设置版本单独配置",
+      "usage": "neml versions config <版本ID> [set <key> <value>]",
+      "args": [
+        {"name": "版本ID", "description": "目标版本", "optional": false},
+        {"name": "key", "description": "配置项", "optional": true},
+        {"name": "value", "description": "配置值", "optional": true}
+      ]
+    }
   }
 }

@@ -59,8 +59,7 @@ java -jar neml.jar core help
 
 ## Mod 开发指南
 完整的 Mod 开发规范请查阅
-内置Mod(与启动器一起编译): [BUILTIN_MOD_SPEC文档](https://github.com/Yuno-2233/Non-existentMinecraftlauncher/blob/main/docs/BUILTIN_MOD_SPEC.md)
-外置mod(编译好的jar文件): [EXTERNAL_MOD_SPEC.md](https://github.com/Yuno-2233/Non-existentMinecraftlauncher/blob/main/docs/EXTERNAL_MOD_SPEC.md)
+官网文档: https://yuno-2233.github.io/Non-existentMinecraftlauncher/docs.html?page=dev.md
 
 ## 项目结构
 ```

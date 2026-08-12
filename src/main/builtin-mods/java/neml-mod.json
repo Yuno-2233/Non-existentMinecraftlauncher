@@ -1,6 +1,7 @@
 {
   "id": "java",
   "version": "1.0.0",
+  "description": "管理 Java 运行时",
   "mainClass": "io.github.yuno2233.neml.java.JavaMain",
   "depends": {},
   "entrypoints": {
@@ -8,10 +9,8 @@
     "command": ["io.github.yuno2233.neml.java.JavaCommandDispatcher"]
   },
   "commands": {
-    "list": "列出所有已添加的 Java 并显示版本",
-    "dir add <路径>": "添加一个 Java 目录（bin 上级）",
-    "dir list": "列出所有已添加的 Java 目录",
-    "dir switch <索引>": "切换到指定的 Java 目录",
-    "info": "显示当前选中的 Java 详细信息"
+    "list": "列出已添加的 Java 路径及版本",
+    "dir": "管理 Java 目录（add/list/switch）",
+    "info": "显示当前 Java 详细信息"
   }
 }

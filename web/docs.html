@@ -96,23 +96,52 @@
                 const tocRes = await fetch('docs/index.json');
                 const tocData = await tocRes.json();
 
+                // 存储章节信息，用于参数匹配
+                const chapterMap = {};
+
                 // 构建侧边栏
                 tocData.forEach((item, index) => {
                     const li = document.createElement('li');
                     li.textContent = item.title;
+                    li.setAttribute('data-file', item.file);
                     li.addEventListener('click', () => {
                         loadDocument(item.file);
                         document.querySelectorAll('.sidebar li').forEach(el => el.classList.remove('active'));
                         li.classList.add('active');
+                        // 更新 URL 参数
+                        history.replaceState(null, '', '?page=' + encodeURIComponent(item.file));
                     });
                     tocList.appendChild(li);
+                    chapterMap[item.file] = li;
                 });
 
-                // 默认加载第一个文档
-                if (tocData.length > 0) {
-                    const firstLi = tocList.querySelector('li');
-                    firstLi.classList.add('active');
-                    await loadDocument(tocData[0].file);
+                // 解析 URL 参数，获取目标章节
+                const urlParams = new URLSearchParams(window.location.search);
+                const targetPage = urlParams.get('page');
+
+                let defaultFile = tocData.length > 0 ? tocData[0].file : null;
+                let targetFile = targetPage || defaultFile;
+                let targetLi = chapterMap[targetFile];
+
+                if (targetLi) {
+                    await loadDocument(targetFile);
+                    // 高亮对应侧边栏
+                    document.querySelectorAll('.sidebar li').forEach(el => el.classList.remove('active'));
+                    targetLi.classList.add('active');
+                    // 保证 URL 参数与当前显示一致（无参数时自动补上）
+                    if (!targetPage) {
+                        history.replaceState(null, '', '?page=' + encodeURIComponent(targetFile));
+                    }
+                } else {
+                    // 如果指定的文件不存在，加载第一个
+                    if (defaultFile) {
+                        await loadDocument(defaultFile);
+                        const firstLi = tocList.querySelector('li');
+                        if (firstLi) firstLi.classList.add('active');
+                        history.replaceState(null, '', '?page=' + encodeURIComponent(defaultFile));
+                    } else {
+                        contentDiv.innerHTML = '<p>文档中没有内容。</p>';
+                    }
                 }
             } catch (error) {
                 contentDiv.innerHTML = '<p>无法加载文档目录。</p>';

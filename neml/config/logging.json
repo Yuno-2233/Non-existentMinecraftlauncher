@@ -1,0 +1,14 @@
+{
+  "level": "INFO",
+  "console": {
+    "color": true,
+    "pattern": "[%d{HH:mm:ss}] [%level] [%thread] [%name] %msg%n"
+  },
+  "file": {
+    "path": "neml/logs/neml.log",
+    "maxFileSize": "5MB",
+    "maxHistory": 30,
+    "pattern": "%d{yyyy-MM-dd HH:mm:ss} [%level] [%thread] [%name] %msg%n"
+  },
+  "modLevels": {}
+}

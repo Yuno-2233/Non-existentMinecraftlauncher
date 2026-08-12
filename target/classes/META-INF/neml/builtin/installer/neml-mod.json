@@ -1,6 +1,7 @@
 {
   "id": "installer",
   "version": "1.0.0",
+  "description": "下载安装 Minecraft 原版客户端",
   "mainClass": "io.github.yuno2233.neml.installer.InstallerMain",
   "depends": {},
   "entrypoints": {
@@ -8,6 +9,13 @@
     "command": ["io.github.yuno2233.neml.installer.InstallerCommandDispatcher"]
   },
   "commands": {
-    "install <版本ID>": "安装指定 Minecraft 版本（下载所有文件）"
+    "install": {
+      "description": "安装指定 Minecraft 版本",
+      "usage": "neml installer install <版本ID> [自定义名称]",
+      "args": [
+        {"name": "版本ID", "description": "Minecraft 版本号", "optional": false},
+        {"name": "自定义名称", "description": "本地存储名称", "optional": true}
+      ]
+    }
   }
 }
