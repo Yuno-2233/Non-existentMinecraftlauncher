@@ -4,5 +4,6 @@
   { "title": "内置Mod命令", "file": "commands.md" },
   { "title": "配置与数据目录", "file": "config.md" },
   { "title": "开发Mod", "file": "dev.md" },
+  { "title": "关于纯终端开发", "file": "termux.md" },
   { "title": "鸣谢名单", "file": "thanks.md" }
 ]
